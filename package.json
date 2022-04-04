@@ -1,0 +1,25 @@
+{
+  "name": "fiscal-js",
+  "version": "0.0.1",
+  "description": "A fianance calculator inspired by the HP12-c to help you with your fiscal responsibilties and goals",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [
+    "investment",
+    "calculator",
+    "IIR",
+    "DCF",
+    "PV",
+    "FV"
+  ],
+  "author": "Garrett Sanderson",
+  "license": "ISC",
+  "dependencies": {
+    "typescript": "^4.6.3"
+  },
+  "devDependencies": {
+    "jest": "^27.5.1"
+  }
+}
