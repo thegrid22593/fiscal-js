@@ -2,8 +2,9 @@
   "name": "fiscal-js",
   "version": "0.0.1",
   "description": "A fianance calculator inspired by the HP12-c to help you with your fiscal responsibilties and goals",
-  "main": "./dist/fiscal.js",
+  "main": "./lib/fiscal.js",
   "scripts": {
+    "build": "npx tsc",
     "test": "jest"
   },
   "keywords": [
@@ -23,8 +24,6 @@
     "@types/jest": "^27.4.1",
     "jest": "^27.5.1",
     "ts-jest": "^27.1.4",
-    "ts-loader": "^9.2.8",
-    "webpack": "^5.71.0",
-    "webpack-cli": "^4.9.2"
+    "ts-loader": "^9.2.8"
   }
 }
