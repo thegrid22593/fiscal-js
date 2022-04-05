@@ -5,7 +5,7 @@ export interface IFiscal {
     compountInterest(principal: number, rate: number , numberOfYears: number): string;
     compountInterest(principal: number, rate: number , numberOfYears: number): string;
     simpleInterest(principal: number, rate: number, numberOfYears: number): string;
-    // internalRateOfReturn(principal: number, cashflows: number[], rate: number): string;
+    internalRateOfReturn(principal: number, cashflows: number[], rate: number): string;
     discountedCashFlow(principal:number, cashflows: number[], rate: number): number;
     returnOnInvestment(initialInvestment: number, earnings: number): string;
 }
