@@ -1,15 +1,15 @@
 const fiscal = require('./index.ts');
 
 test('calculating compound interest should equal 865865.07', () => {
-    expect(fiscal.calculateCompountInterest(92000, 7.5, 31)).toBe("865865.07")
+    expect(fiscal.compountInterest(92000, 7.5, 31)).toBe("865865.07")
 });
 
 test('calculating simple interest should equal 305900.00', () => {
-    expect(fiscal.calculateSimpleInterest(92000, 7.5, 31)).toBe("305900.00")
+    expect(fiscal.simpleInterest(92000, 7.5, 31)).toBe("305900.00")
 });
 
 test('calculating the discounted cash flows should return 278.46', () => {
-    let value = fiscal.calculateDiscountedCashFlows(100, [20, 40, 60, 20, 70], 5);
+    let value = fiscal.discountedCashFlow(100, [20, 40, 60, 20, 70], 5);
 
     expect(value.toFixed(2)).toBe("278.46");
 });
@@ -47,7 +47,7 @@ test('NPV: With an initial investment of $500,000 and a rate of 10% and cash flo
 
 test('ROI: With an initial investment of $50,000 and earnings of $200,000 the return on investment should be 300%', () => {
 
-    let roi = fiscal.returnOnInvestment(50000, 200000);
+    let roi = fiscal.returnOnInvestment(-50000, 200000);
 
     expect(roi).toBe("300%");
 

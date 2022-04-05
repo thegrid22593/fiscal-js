@@ -1,5 +1,3 @@
-import { Percent } from "./percent";
-
 export interface IFiscal {
     presentValue(terminalValue: number, rate: number, numberOfYears: number): number;
     futureValue(initialIvestment: number, rate: number, numberOfYears: number): number;
@@ -86,7 +84,7 @@ class Fiscal implements IFiscal {
 
     // TODO: Does too much
     public discountedCashFlow(principal:number, cashflows: number[], rate: number): number {
-        let percentRate = new Percent(rate).asDecimal();
+        let percentRate = this.makePercentAsDecimal(rate);
         
         let discountedCashFlows = cashflows.reduce((partialSum, cashflow, index) => {
             let year = index + 1;
@@ -98,8 +96,8 @@ class Fiscal implements IFiscal {
     }
 
     public returnOnInvestment(initialInvestment: number, earnings: number): string {
-        let roi = earnings - Math.abs(initialInvestment) / Math.abs(initialInvestment) * 100;
-        return new Percent(Math.round(roi * 100) / 100).asString();
+        let roi = (earnings - Math.abs(initialInvestment)) / Math.abs(initialInvestment) * 100;
+        return this.makePercentAsString(Math.round(roi * 100) / 100);
     }
 
     //TODO: 
