@@ -9,6 +9,7 @@ export interface IFiscal {
     internalRateOfReturn(principal: number, cashflows: number[], rate: number): string;
     discountedCashFlow(principal:number, cashflows: number[], rate: number): number;
     returnOnInvestment(initialInvestment: number, earnings: number): string;
+    compoundedAnnualGrowthRate(initialInvestment: number, terminalValue: number, numberOfYears: number): string;
 }
 
 class Fiscal implements IFiscal {
