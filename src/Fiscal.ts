@@ -13,33 +13,25 @@ export interface IFiscal {
 
 class Fiscal implements IFiscal {
 
-    private makePercentAsDecimal(number: number): number {
-        return number / 100;
-    }
-
     private getDiscountedCashFlowRate(rate: number, year: number) {
         return Math.pow((1 + rate), year);
     }
 
-    private makePercentAsString(percent: number) {
-        return percent.toString() + "%";
-    }
-
     public presentValue(terminalValue: number, rate: number, numberOfYears: number) {
-        let percentRate = this.makePercentAsDecimal(rate);
+        let percentRate = new Percent(rate).asDecimal();
         let pv = terminalValue / Math.pow(1 + percentRate, numberOfYears);
         return Math.round(pv * 100) / 100;
     }
     
     public futureValue(initialIvestment: number, rate: number, numberOfYears: number) {
-        let percentRate = this.makePercentAsDecimal(rate);
+        let percentRate = new Percent(rate).asDecimal();
         let futureValue = initialIvestment * this.getDiscountedCashFlowRate(percentRate, numberOfYears);
         return Math.round(futureValue * 100) / 100;
     }
 
     // Net Present Value
     public netPresentValue(principal: number, rate: number, cashFlows: number[]) {
-        let percentRate = this.makePercentAsDecimal(rate);
+        let percentRate = new Percent(rate).asDecimal();
         let netPresentValue = principal;
         for(var i = 0; i < cashFlows.length; i++) {
             netPresentValue += (cashFlows[i] / this.getDiscountedCashFlowRate(percentRate, i));
@@ -86,7 +78,7 @@ class Fiscal implements IFiscal {
 
     // TODO: Does too much
     public discountedCashFlow(principal:number, cashflows: number[], rate: number): number {
-        let percentRate = this.makePercentAsDecimal(rate);
+        let percentRate = new Percent(rate).asDecimal();
         
         let discountedCashFlows = cashflows.reduce((partialSum, cashflow, index) => {
             let year = index + 1;
@@ -99,7 +91,7 @@ class Fiscal implements IFiscal {
 
     public returnOnInvestment(initialInvestment: number, earnings: number): string {
         let roi = (earnings - Math.abs(initialInvestment)) / Math.abs(initialInvestment) * 100;
-        return this.makePercentAsString(Math.round(roi * 100) / 100);
+        return new Percent(Math.round(roi * 100) / 100).asString();
     }
     
     public compoundedAnnualGrowthRate(initialInvestment: number, terminalValue: number, numberOfYears: number): string {
