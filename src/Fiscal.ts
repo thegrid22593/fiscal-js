@@ -6,7 +6,7 @@ export interface IFiscal {
     netPresentValue(principal: number, rate: number, cashFlows: number[]): number;
     compountInterest(principal: number, rate: number , numberOfYears: number): string;
     simpleInterest(principal: number, rate: number, numberOfYears: number): string;
-    internalRateOfReturn(principal: number, cashflows: number[], rate: number): string;
+    // internalRateOfReturn(principal: number, cashflows: number[], rate: number): string;
     discountedCashFlow(principal:number, cashflows: number[], rate: number): number;
     returnOnInvestment(initialInvestment: number, earnings: number): string;
     compoundedAnnualGrowthRate(initialInvestment: number, terminalValue: number, numberOfYears: number): string;
@@ -53,29 +53,29 @@ class Fiscal implements IFiscal {
     }
 
     // The rate of return that makes the net present value (NPV) = 0 
-    public internalRateOfReturn(principal: number, cashflows: number[], rate: number = 0): string {
-        let percentRate = rate / 100;
+    // public internalRateOfReturn(principal: number, cashflows: number[], rate: number = 0): string {
+    //     let percentRate = rate / 100;
         
-        let discountedCashFlows = cashflows.reduce((partialSum: number, cashflow: number, index: number) => {
-            let year = index + 1;
-            return partialSum + (cashflow / Math.pow(1+percentRate, year))
-        }, 0);
+    //     let discountedCashFlows = cashflows.reduce((partialSum: number, cashflow: number, index: number) => {
+    //         let year = index + 1;
+    //         return partialSum + (cashflow / Math.pow(1+percentRate, year))
+    //     }, 0);
 
-        let npv = discountedCashFlows - principal;
+    //     let npv = discountedCashFlows - principal;
 
-        if(npv > 1) {
-            return this.internalRateOfReturn(principal, cashflows, rate + 1);
-        }
+    //     if(npv > 1) {
+    //         return this.internalRateOfReturn(principal, cashflows, rate + 1);
+    //     }
 
-        if(Math.abs(npv).toFixed(2) == "0.00") {
-            return rate.toFixed(2) + "%";
-        }
+    //     if(Math.abs(npv).toFixed(2) == "0.00") {
+    //         return rate.toFixed(2) + "%";
+    //     }
 
-        if(Math.abs(npv).toFixed(1) == "0.1" || Math.abs(npv).toFixed(2) != "0.00") {
-           return this.internalRateOfReturn(principal, cashflows, rate + .01);
-        }
+    //     if(Math.abs(npv).toFixed(1) == "0.1" || Math.abs(npv).toFixed(2) != "0.00") {
+    //        return this.internalRateOfReturn(principal, cashflows, rate + .01);
+    //     }
         
-    }
+    // }
 
     // TODO: Does too much
     public discountedCashFlow(principal:number, cashflows: number[], rate: number): number {
