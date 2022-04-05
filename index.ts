@@ -14,6 +14,10 @@ class Fiscal {
         return Math.pow((1 + rate), year);
     }
 
+    private makePercentAsString(percent: number) {
+        return percent.toString() + "%";
+    }
+
     public presentValue(terminalValue: number, rate: number, numberOfYears: number) {
         let percentRate = this.makePercentAsDecimal(rate);
         let pv = terminalValue / Math.pow(1 + percentRate, numberOfYears);
@@ -59,7 +63,6 @@ class Fiscal {
         }, 0);
 
         let npv = discountedCashFlows - principal;
-        console.log('npv', rate, Math.abs(npv).toFixed(2));
 
         if(npv > 1) {
             return this.calculateInternalRateOfReturn(principal, cashflows, rate + 1);
@@ -77,7 +80,7 @@ class Fiscal {
 
     // TODO: Does too much
     calculateDiscountedCashFlows(principal:number, cashflows: number[], rate: number) {
-        let percentRate = rate / 100;
+        let percentRate = this.makePercentAsDecimal(rate);
         
         let discountedCashFlows = cashflows.reduce((partialSum, cashflow, index) => {
             let year = index + 1;
@@ -86,6 +89,11 @@ class Fiscal {
 
         let terminalValue = discountedCashFlows + principal;
         return terminalValue;
+    }
+
+    public returnOnInvestment(initialInvestment: number, earnings: number): string {
+        let roi = earnings - Math.abs(initialInvestment) / Math.abs(initialInvestment) * 100;
+        return this.makePercentAsString(Math.round(roi * 100) / 100);
     }
 }
 

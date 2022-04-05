@@ -29,7 +29,7 @@ test('calculating present value should be equal to 31046.07', () => {
 
 });
 
-test('calculating future value should be equal to 80525.5', () => {
+test('FV: calculating future value should be equal to 80525.5', () => {
 
     let pv = fiscal.futureValue(50000, 10, 5);
 
@@ -37,10 +37,18 @@ test('calculating future value should be equal to 80525.5', () => {
 
 });
 
-test('calculating net present value should be equal to 39339.67', () => {
+test('NPV: With an initial investment of $500,000 and a rate of 10% and cash flows of $200,000 the first year, $300,000 the second year and $200,000 the third year the net present value should equal 39339.67', () => {
 
     let npv = fiscal.netPresentValue(-500000, 10, [200000, 300000, 200000]);
 
     expect(npv).toBe(138016.53);
+
+});
+
+test('ROI: With an initial investment of $50,000 and earnings of $200,000 the return on investment should be 300%', () => {
+
+    let roi = fiscal.returnOnInvestment(50000, 200000);
+
+    expect(roi).toBe("300%");
 
 });
