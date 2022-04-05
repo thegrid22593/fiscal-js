@@ -1,4 +1,4 @@
-const fiscal = require('./index.ts');
+const fiscal = require('./Fiscal.ts');
 
 test('calculating compound interest should equal 865865.07', () => {
     expect(fiscal.compountInterest(92000, 7.5, 31)).toBe("865865.07")
@@ -50,5 +50,13 @@ test('ROI: With an initial investment of $50,000 and earnings of $200,000 the re
     let roi = fiscal.returnOnInvestment(-50000, 200000);
 
     expect(roi).toBe("300%");
+
+});
+
+test("CAGR: With an initial investment of $50,000 and an ending value of $100,000 over 5 years the compounded annual growth rate should b 15%", () => {
+
+    let CAGR = fiscal.compoundedAnnualGrowthRate(50000, 100000, 5);
+
+    expect(CAGR).toBe("15%");
 
 });

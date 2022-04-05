@@ -1,3 +1,5 @@
+import { Percent } from "./percent";
+
 export interface IFiscal {
     presentValue(terminalValue: number, rate: number, numberOfYears: number): number;
     futureValue(initialIvestment: number, rate: number, numberOfYears: number): number;
@@ -98,6 +100,11 @@ class Fiscal implements IFiscal {
     public returnOnInvestment(initialInvestment: number, earnings: number): string {
         let roi = (earnings - Math.abs(initialInvestment)) / Math.abs(initialInvestment) * 100;
         return this.makePercentAsString(Math.round(roi * 100) / 100);
+    }
+    
+    public compoundedAnnualGrowthRate(initialInvestment: number, terminalValue: number, numberOfYears: number): string {
+        let CAGR = Math.pow((terminalValue / initialInvestment), 1 / numberOfYears) - 1;
+        return new Percent(Math.round(CAGR * 100)).asString();
     }
 
     //TODO: 
