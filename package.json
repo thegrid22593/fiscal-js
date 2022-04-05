@@ -7,6 +7,10 @@
     "build": "npx tsc",
     "test": "jest"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thegrid22593/fiscal-js.git"
+  },
   "keywords": [
     "investment",
     "calculator",
