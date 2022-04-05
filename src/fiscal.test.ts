@@ -68,3 +68,18 @@ test('PI: With an initial payment due of $23,456, how many payments of $525 per 
     expect(PI).toBe(45);
 
 });
+
+describe('amortization', () => {
+    
+    test('With a total payment due of $17,000 paid per month over 5 years with a 2.71% rate, the price of the monthly payment should be $303.28', () => {
+        let am = fiscal.amortization(17000, 2.71, 5)
+        expect(am).toBe(303.28);
+    });
+
+    test('With a total payment due of $17,000 paid per month over 60 months with a 2.71% rate, the price of monthly payment should be $303.28', () => {
+        let am = fiscal.amortization(17000, 2.71, 60, true)
+        expect(am).toBe(303.28);
+    });
+    
+
+});

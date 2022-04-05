@@ -11,6 +11,7 @@ export interface IFiscal {
     returnOnInvestment(initialInvestment: number, earnings: number): string;
     compoundedAnnualGrowthRate(initialInvestment: number, terminalValue: number, numberOfYears: number): string;
     paybackIntervals(amountDue: number, intervalPaymentAmount: number): number;
+    amortization(principal: number, rate: number, totalNumberOfPayments: number, intervalInMonths: boolean, includeInitialPayment: boolean) : number
 }
 
 class Fiscal implements IFiscal {
@@ -19,19 +20,48 @@ class Fiscal implements IFiscal {
         return Math.pow((1 + rate), year);
     }
 
+
+    /**
+     * 
+     * @param terminalValue 
+     * @param rate 
+     * @param numberOfYears 
+     * @returns 
+     * 
+     * Present value (PV) is the current value of a future sum of money 
+     * or stream of cash flows given a specified rate of return.
+     */
     public presentValue(terminalValue: number, rate: number, numberOfYears: number) {
         let percentRate = new Percent(rate).asDecimal();
         let pv = terminalValue / Math.pow(1 + percentRate, numberOfYears);
         return Math.round(pv * 100) / 100;
     }
     
+    /**
+     * 
+     * @param initialIvestment 
+     * @param rate 
+     * @param numberOfYears 
+     * @returns 
+     * 
+     * Future value, or FV, is what money is expected to be worth in the future.
+     */
     public futureValue(initialIvestment: number, rate: number, numberOfYears: number) {
         let percentRate = new Percent(rate).asDecimal();
         let futureValue = initialIvestment * this.getDiscountedCashFlowRate(percentRate, numberOfYears);
         return Math.round(futureValue * 100) / 100;
     }
 
-    // Net Present Value
+    /**
+     * 
+     * @param principal 
+     * @param rate 
+     * @param cashFlows 
+     * @returns 
+     * 
+     * Net present value is the present value of the cash flows at the required 
+     * rate of return of your project compared to your initial investment.
+     */
     public netPresentValue(principal: number, rate: number, cashFlows: number[]) {
         let percentRate = new Percent(rate).asDecimal();
         let netPresentValue = principal;
@@ -41,12 +71,33 @@ class Fiscal implements IFiscal {
         return Math.round(netPresentValue * 100) / 100;
     }
 
+    /**
+     * 
+     * @param principal 
+     * @param rate 
+     * @param numberOfYears 
+     * @returns string
+     * 
+     * Compound interest (or compounding interest) is the interest on a loan or 
+     * deposit calculated based on both the initial principal and the accumulated 
+     * interest from previous periods.
+     */
     public compountInterest(principal: number, rate: number , numberOfYears: number): string {
         let percentRate = rate / 100;
         let rateTimesYearSum = Math.pow(1 + percentRate, numberOfYears);
         return (principal * rateTimesYearSum).toFixed(2);
     }
 
+    /**
+     * 
+     * @param principal 
+     * @param rate 
+     * @param numberOfYears 
+     * @returns 
+     * 
+     * Simple interest is a method to calculate the amount of interest charged 
+     * on a sum at a given rate and for a given period of time.
+     */
     public simpleInterest(principal: number, rate: number, numberOfYears: number): string {
         let percentRate = rate / 100;
         let finalAmount = principal * (1+(percentRate*numberOfYears));
@@ -91,11 +142,30 @@ class Fiscal implements IFiscal {
         return terminalValue;
     }
 
+    /**
+     * 
+     * @param initialInvestment 
+     * @param earnings 
+     * @returns 
+     * 
+     * Return on Investment (ROI) is a popular profitability metric 
+     * used to evaluate how well an investment has performed
+     */
     public returnOnInvestment(initialInvestment: number, earnings: number): string {
         let roi = (earnings - Math.abs(initialInvestment)) / Math.abs(initialInvestment) * 100;
         return new Percent(Math.round(roi * 100) / 100).asString();
     }
     
+    /**
+     * 
+     * @param initialInvestment 
+     * @param terminalValue 
+     * @param numberOfYears 
+     * @returns string
+     * 
+     * Compound annual growth rate, or CAGR, is the mean annual growth rate of an 
+     * investment over a specified period of time longer than one year.
+     */
     public compoundedAnnualGrowthRate(initialInvestment: number, terminalValue: number, numberOfYears: number): string {
         let CAGR = Math.pow((terminalValue / initialInvestment), 1 / numberOfYears) - 1;
         return new Percent(Math.round(CAGR * 100)).asString();
@@ -104,16 +174,47 @@ class Fiscal implements IFiscal {
     public paybackIntervals(amountDue: number, intervalPaymentAmount: number): number {
         return Math.ceil(amountDue / intervalPaymentAmount)
     }
+    
+    /**
+     * 
+     * @param principal 
+     * @param rate 
+     * @param totalNumberOfPayments 
+     * @param intervalInMonths 
+     * @param includeInitialPayment 
+     * @returns number
+     * 
+     * Amortization is paying off a debt over time in equal installments. 
+     * Part of each payment goes toward the loan principal, and part goes toward interest. 
+     * With mortgage loan amortization, the amount going toward principal starts out small, 
+     * and gradually grows larger month by month.
+     */
+    public amortization(principal: number, rate: number, totalNumberOfPayments: number, intervalInMonths: boolean = false, includeInitialPayment: boolean = false) : number {
+        let periodicInterestRate = new Percent(rate / 12).asDecimal();
+
+        if(!intervalInMonths) {
+            totalNumberOfPayments = totalNumberOfPayments * 12;
+        }
+
+        if(includeInitialPayment) {
+            --totalNumberOfPayments;
+        }
+
+        let numerator = periodicInterestRate * Math.pow((1 + periodicInterestRate), totalNumberOfPayments);
+        let denominator = Math.pow((1 + periodicInterestRate), totalNumberOfPayments) - 1;
+
+        let monthlyPayment = principal * (numerator / denominator);
+
+        return Math.round(monthlyPayment * 100) / 100;
+    }
 
     //TODO: 
         // IIR - with irregular intervals
         // PP
-        // Amortization
         // PI
         // DF
         // LR
         // WACC
-        // Loan Payment
         // CAPM
         // Stock calcs
 }
