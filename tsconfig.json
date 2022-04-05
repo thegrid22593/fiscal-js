@@ -2,12 +2,12 @@
     "exclude": ["node_modules", "./src/**/*.test.ts"],
     "include": ["./src/**/*.ts"],
     "compilerOptions": {
-      "declaration": true,
+      // "declaration": true,
       "sourceMap": true,
       "removeComments": true,
       "outDir": "./lib/",
       "noImplicitAny": true,
-      "module": "es6",
+      "module": "commonjs",
       "target": "es5",
       "allowJs": true,
       "moduleResolution": "node"
