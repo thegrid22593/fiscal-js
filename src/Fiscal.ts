@@ -113,7 +113,6 @@ class Fiscal implements IFiscal {
         // Amortization
         // PI
         // DF
-        // CAGR
         // LR
         // WACC
         // Loan Payment
