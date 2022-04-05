@@ -1,32 +1,33 @@
 class Fiscal {
-    constructor(currency = "USD") {
+
+    currency: string;
+
+    constructor(currency:string = "USD") {
         this.currency = currency;
     }
 
-    // TODO: make private
-    makePercentAsDecimal(number) {
+    private makePercentAsDecimal(number: number): number {
         return number / 100;
     }
 
-    // TODO: make private
-    getDiscountedCashFlowRate(rate, year) {
+    private getDiscountedCashFlowRate(rate: number, year: number) {
         return Math.pow((1 + rate), year);
     }
 
-    presentValue(terminalValue, rate, numberOfYears) {
+    public presentValue(terminalValue: number, rate: number, numberOfYears: number) {
         let percentRate = this.makePercentAsDecimal(rate);
-        let pv = terminalValue / Math.pow(1 + rate, percentRate, numberOfYears);
+        let pv = terminalValue / Math.pow(1 + percentRate, numberOfYears);
         return Math.round(pv * 100) / 100;
     }
     
-    futureValue(initialIvestment, rate, numberOfYears) {
+    futureValue(initialIvestment: number, rate: number, numberOfYears: number) {
         let percentRate = this.makePercentAsDecimal(rate);
         let futureValue = initialIvestment * this.getDiscountedCashFlowRate(percentRate, numberOfYears);
         return Math.round(futureValue * 100) / 100;
     }
 
     // Net Present Value
-    netPresentValue(principal, rate, cashFlows) {
+    netPresentValue(principal: number, rate: number, cashFlows: number[]) {
         let percentRate = this.makePercentAsDecimal(rate);
         let netPresentValue = principal;
         for(var i = 0; i < cashFlows.length; i++) {
@@ -36,23 +37,23 @@ class Fiscal {
     }
 
 
-    calculateCompountInterest(principal, rate, numberOfYears) {
+    calculateCompountInterest(principal: number, rate: number , numberOfYears: number) {
         let percentRate = rate / 100;
         let rateTimesYearSum = Math.pow(1 + percentRate, numberOfYears);
         return (principal * rateTimesYearSum).toFixed(2);
     }
 
-    calculateSimpleInterest(principal, rate, numberOfYears) {
+    calculateSimpleInterest(principal: number, rate: number, numberOfYears: number) {
         let percentRate = rate / 100;
         let finalAmount = principal * (1+(percentRate*numberOfYears));
         return finalAmount.toFixed(2);
     }
 
     // The rate of return that makes the net present value (NPV) = 0 
-    calculateInternalRateOfReturn(principal, cashflows, rate = 0) {
+    calculateInternalRateOfReturn(principal: number, cashflows: number[], rate: number = 0): string {
         let percentRate = rate / 100;
         
-        let discountedCashFlows = cashflows.reduce((partialSum, cashflow, index) => {
+        let discountedCashFlows = cashflows.reduce((partialSum: number, cashflow: number, index: number) => {
             let year = index + 1;
             return partialSum + (cashflow / Math.pow(1+percentRate, year))
         }, 0);
@@ -74,12 +75,8 @@ class Fiscal {
         
     }
 
-    calculateDiscountValue(value) {
-
-    }
-
     // TODO: Does too much
-    calculateDiscountedCashFlows(principal, cashflows, rate) {
+    calculateDiscountedCashFlows(principal:number, cashflows: number[], rate: number) {
         let percentRate = rate / 100;
         
         let discountedCashFlows = cashflows.reduce((partialSum, cashflow, index) => {

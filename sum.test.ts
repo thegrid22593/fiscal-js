@@ -1,6 +1,4 @@
-const { expect } = require('@jest/globals');
-
-const fiscal = require('./index.js');
+const fiscal = require('./index.ts');
 
 test('calculating compound interest should equal 865865.07', () => {
     expect(fiscal.calculateCompountInterest(92000, 7.5, 31)).toBe("865865.07")
@@ -23,11 +21,11 @@ test('calculating the discounted cash flows should return 278.46', () => {
 //     expect(rate).toBe("47.23%")
 // });
 
-test('calculating present value should be equal to 39339.67', () => {
+test('calculating present value should be equal to 31046.07', () => {
 
     let pv = fiscal.presentValue(50000, 10, 5);
 
-    expect(pv).toBe(39339.67);
+    expect(pv).toBe(31046.07);
 
 });
 
