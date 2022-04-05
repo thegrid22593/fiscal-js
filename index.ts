@@ -3,7 +3,6 @@ export interface IFiscal {
     futureValue(initialIvestment: number, rate: number, numberOfYears: number): number;
     netPresentValue(principal: number, rate: number, cashFlows: number[]): number;
     compountInterest(principal: number, rate: number , numberOfYears: number): string;
-    compountInterest(principal: number, rate: number , numberOfYears: number): string;
     simpleInterest(principal: number, rate: number, numberOfYears: number): string;
     internalRateOfReturn(principal: number, cashflows: number[], rate: number): string;
     discountedCashFlow(principal:number, cashflows: number[], rate: number): number;
