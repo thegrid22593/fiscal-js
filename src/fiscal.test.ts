@@ -60,3 +60,11 @@ test("CAGR: With an initial investment of $50,000 and an ending value of $100,00
     expect(CAGR).toBe("15%");
 
 });
+
+test('PI: With an initial payment due of $23,456, how many payments of $525 per interval until its paid off', () => {
+
+    let PI = fiscal.paybackIntervals(23456, 525)
+    
+    expect(PI).toBe(45);
+
+});

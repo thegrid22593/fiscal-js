@@ -10,6 +10,7 @@ export interface IFiscal {
     discountedCashFlow(principal:number, cashflows: number[], rate: number): number;
     returnOnInvestment(initialInvestment: number, earnings: number): string;
     compoundedAnnualGrowthRate(initialInvestment: number, terminalValue: number, numberOfYears: number): string;
+    paybackIntervals(amountDue: number, intervalPaymentAmount: number): number;
 }
 
 class Fiscal implements IFiscal {
@@ -98,6 +99,10 @@ class Fiscal implements IFiscal {
     public compoundedAnnualGrowthRate(initialInvestment: number, terminalValue: number, numberOfYears: number): string {
         let CAGR = Math.pow((terminalValue / initialInvestment), 1 / numberOfYears) - 1;
         return new Percent(Math.round(CAGR * 100)).asString();
+    }
+
+    public paybackIntervals(amountDue: number, intervalPaymentAmount: number): number {
+        return Math.ceil(amountDue / intervalPaymentAmount)
     }
 
     //TODO: 
