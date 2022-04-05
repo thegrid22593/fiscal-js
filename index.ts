@@ -100,6 +100,19 @@ class Fiscal implements IFiscal {
         let roi = earnings - Math.abs(initialInvestment) / Math.abs(initialInvestment) * 100;
         return this.makePercentAsString(Math.round(roi * 100) / 100);
     }
+
+    //TODO: 
+        // IIR - with irregular intervals
+        // PP
+        // Amortization
+        // PI
+        // DF
+        // CAGR
+        // LR
+        // WACC
+        // Loan Payment
+        // CAPM
+        // Stock calcs
 }
 
 module.exports = new Fiscal();
