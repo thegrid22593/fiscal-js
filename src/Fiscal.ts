@@ -151,7 +151,17 @@ class Fiscal implements IFiscal {
         return new Percent(rate).asString();
     }
 
-    // TODO: Does too much
+    /**
+     * 
+     * @param principal 
+     * @param cashflows 
+     * @param rate 
+     * @returns 
+     * 
+     * Discounted cash flow (DCF) is a valuation method used to estimate the value of an investment 
+     * based on its expected future cash flows. DCF analysis attempts to figure out the value of an 
+     * investment today, based on projections of how much money it will generate in the future.
+     */
     public discountedCashFlow(principal:number, cashflows: number[], rate: number): number {
         let percentRate = new Percent(rate).asDecimal();
         
@@ -261,6 +271,14 @@ class Fiscal implements IFiscal {
         return yearlySalary - taxes;
     }
 
+    /**
+     * 
+     * @param inflationRate 
+     * @param returnOnInvestment 
+     * @returns 
+     * 
+     * The inflation-adjusted return is the measure of return that takes into account the time period's inflation rate.
+     */
     public returnAdjustedForInflation(inflationRate: number, returnOnInvestment: number): string {
         let a = 1 + returnOnInvestment / 100;
         let b = 1 + inflationRate / 100;
