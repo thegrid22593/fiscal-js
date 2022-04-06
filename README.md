@@ -107,3 +107,9 @@ Discount Factor is used to calculate what the value of receiving $1 at some poin
 ```ts
 fiscal.discountFactor(rate: number, numberOfIntervals: number): number
 ```
+
+### Capital Asset Pricing Model (CAPM)
+The capital asset pricing model provides a formula that calculates the expected return on a security based on its level of risk. The formula for the capital asset pricing model is the risk-free rate plus beta times the difference of the return on the market and the risk-free rate.
+```ts
+fiscal.capitalAssetPricingModel(riskFreeRate: number, expectedMarketReturn: number, beta: number): number
+```

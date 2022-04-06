@@ -16,6 +16,7 @@ export interface IFiscal {
     getSalaryPerYear(hourlyRate: number, taxRate: number): number;
     weightedAverageCostOfCapital(marketValueOfEquity: number, marketValueOfDebt: number, costOfEquity: number, costOfDebt: number, corporateTaxRate: number): string;
     discountFactor(rate: number, numberOfIntervals: number): number;
+    capitalAssetPricingModel(riskFreeRate: number, expectedMarketReturn: number, beta: number): number
 }
 
 class Fiscal implements IFiscal {
@@ -327,16 +328,34 @@ class Fiscal implements IFiscal {
         let R = new Percent(rate).asDecimal();
         let T = numberOfIntervals;
 
-        let DF = (1 / Math.pow(1 + R, numberOfIntervals));
+        let DF = (1 / Math.pow(1 + R, T));
         return Math.round(DF * 100) / 100;
+    }
+
+    /**
+     *
+     * @param riskFreeRate
+     * @param expectedMarketReturn
+     * @param beta
+     *
+     * The capital asset pricing model provides a formula that calculates the expected return
+     * on a security based on its level of risk. The formula for the capital asset pricing model
+     * is the risk-free rate plus beta times the difference of the return on the market and the risk-free rate.
+     *
+     */
+    public capitalAssetPricingModel(riskFreeRate: number, expectedMarketReturn: number, beta: number): number {
+       let ERm = new Percent(expectedMarketReturn).asDecimal();
+       let Rf = new Percent(riskFreeRate).asDecimal();
+       let Bi = beta;
+
+       let CAER = Rf + (Bi * (ERm - Rf));
+       return Math.round(CAER * 100) / 100;
     }
 
     //TODO: 
         // IIR - with irregular intervals
         // PP
         // PI
-        // DF
-        // CAPM
         // Stock calcs
         // Hourly Wage Calculation
 }

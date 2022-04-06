@@ -120,8 +120,8 @@ describe('IAR: Inflation Adjusted Return', () => {
 describe('WACC: Weighted Average Cost of Capital', () => {
 
     test('Given a firms market value of equity to $400,000 and market value of debt to be $600,000 with a 15% cost of equity and 8% cost of debt along with a 2% corporate tax rate should return a 10.7% cost of capital', () => {
-        let IAR = fiscal.weightedAverageCostOfCapital(400000, 600000, 15, 8, 2);
-        expect(IAR).toBe("10.7%");
+        let WACC = fiscal.weightedAverageCostOfCapital(400000, 600000, 15, 8, 2);
+        expect(WACC).toBe("10.7%");
     });
 
 });
@@ -129,8 +129,17 @@ describe('WACC: Weighted Average Cost of Capital', () => {
 describe('DF: Discount Factor', () => {
 
     test('Given a rate of 6% and 5 compounding intervals the discount factor should be 0.75', () => {
-        let IAR = fiscal.discountFactor(6, 5);
-        expect(IAR).toBe(0.75);
+        let DF = fiscal.discountFactor(6, 5);
+        expect(DF).toBe(0.75);
+    });
+
+});
+
+describe('CAPM: Capital Asset Pricing Model', () => {
+
+    test('Given risk free rate of 3% and an expected market return of 9% and a beta of 4 the return should be 0.27', () => {
+        let CAER = fiscal.capitalAssetPricingModel(3, 9, 4);
+        expect(CAER).toBe(0.27);
     });
 
 });
