@@ -97,12 +97,12 @@ describe('LR: Leverage Ratio', () => {
 describe('Salary', () => {
 
     test('Given a $30/hr wage, your salary should be $62,400', () => {
-        let salary = fiscal.salary(30);
+        let salary = fiscal.getSalaryPerYear(30);
         expect(salary).toBe(62400);
     });
 
     test('Given a $30/hr wage and a 8% tax rate your salary should be', () => {
-        let salary = fiscal.salary(30, 8);
+        let salary = fiscal.getSalaryPerYear(30, 8);
         expect(salary).toBe(57408);
     });
 

@@ -13,7 +13,7 @@ export interface IFiscal {
     paybackIntervals(amountDue: number, intervalPaymentAmount: number): number;
     amortization(principal: number, rate: number, totalNumberOfPayments: number, intervalInMonths: boolean, includeInitialPayment: boolean) : number;
     leverageRatio(liabilities: number, debts: number, totalIncome: number): number;
-    salary(hourlyRate: number, taxRate: number): number;
+    getSalaryPerYear(hourlyRate: number, taxRate: number): number;
 }
 
 class Fiscal implements IFiscal {
@@ -244,7 +244,15 @@ class Fiscal implements IFiscal {
         return Math.round((totalLiabilitiesAndDebt / totalIncome) * 100) / 100;
     }
 
-    public salary(hourlyRate: number, taxRate: number = 0): number {
+    /**
+     * 
+     * @param hourlyRate 
+     * @param taxRate 
+     * @returns 
+     * 
+     * Determine your yearly salary based on the hourly rate
+     */
+    public getSalaryPerYear(hourlyRate: number, taxRate: number = 0): number {
         let weeksInYear = 52;
         let workingHoursPerWeek = 40;
 
@@ -262,7 +270,6 @@ class Fiscal implements IFiscal {
         // CAPM
         // Stock calcs
         // Hourly Wage Calculation
-        // Yearly Salary Calculation
 }
 
 module.exports = new Fiscal();
