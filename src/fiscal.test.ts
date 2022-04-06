@@ -112,7 +112,7 @@ describe('IAR: Inflation Adjusted Return', () => {
 
     test('Given a 2.5% inflation rate, what is the value of a $1,000,000 return', () => {
         let IAR = fiscal.returnAdjustedForInflation(3, 23.3);
-        expect(IAR).toBe(62400);
+        expect(IAR).toBe("19.72%");
     });
 
 });

@@ -264,7 +264,8 @@ class Fiscal implements IFiscal {
     public returnAdjustedForInflation(inflationRate: number, returnOnInvestment: number): string {
         let a = 1 + returnOnInvestment / 100;
         let b = 1 + inflationRate / 100;
-        return new Percent(100 * ((a / b) - 1)).asString();
+        let IAR = 100 * ((a / b) - 1)
+        return IAR.toFixed(2) + "%";
     }
 
     //TODO: 
