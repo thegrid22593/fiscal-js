@@ -101,3 +101,9 @@ The weighted average cost of capital represents the average cost to attract inve
 ```ts
 fiscal.weightedAverageCostOfCapital(marketValueOfEquity: number, marketValueOfDebt: number, costOfEquity: number, costOfDebt: number, corporateTaxRate: number): string
 ```
+
+### Discount Factor (DF)
+Discount Factor is used to calculate what the value of receiving $1 at some point in the future would be (the present value, or “PV”) based on the implied date of receipt and the discount rate assumption.
+```ts
+fiscal.discountFactor(rate: number, numberOfIntervals: number): number
+```

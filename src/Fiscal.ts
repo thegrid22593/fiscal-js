@@ -15,6 +15,7 @@ export interface IFiscal {
     leverageRatio(liabilities: number, debts: number, totalIncome: number): number;
     getSalaryPerYear(hourlyRate: number, taxRate: number): number;
     weightedAverageCostOfCapital(marketValueOfEquity: number, marketValueOfDebt: number, costOfEquity: number, costOfDebt: number, corporateTaxRate: number): string;
+    discountFactor(rate: number, numberOfIntervals: number): number;
 }
 
 class Fiscal implements IFiscal {
@@ -313,12 +314,28 @@ class Fiscal implements IFiscal {
         return new Percent(Math.round(WACC * 1000) / 10).asString();
     };
 
+    /**
+     *
+     * @param rate
+     * @param numberOfIntervals
+     *
+     * Discount Factor is used to calculate what the value of receiving $1
+     * at some point in the future would be (the present value, or “PV”)
+     * based on the implied date of receipt and the discount rate assumption.
+     */
+    public discountFactor(rate: number, numberOfIntervals: number): number {
+        let R = new Percent(rate).asDecimal();
+        let T = numberOfIntervals;
+
+        let DF = (1 / Math.pow(1 + R, numberOfIntervals));
+        return Math.round(DF * 100) / 100;
+    }
+
     //TODO: 
         // IIR - with irregular intervals
         // PP
         // PI
         // DF
-        // IAR
         // CAPM
         // Stock calcs
         // Hourly Wage Calculation

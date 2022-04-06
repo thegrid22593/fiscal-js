@@ -125,3 +125,12 @@ describe('WACC: Weighted Average Cost of Capital', () => {
     });
 
 });
+
+describe('DF: Discount Factor', () => {
+
+    test('Given a rate of 6% and 5 compounding intervals the discount factor should be 0.75', () => {
+        let IAR = fiscal.discountFactor(6, 5);
+        expect(IAR).toBe(0.75);
+    });
+
+});
