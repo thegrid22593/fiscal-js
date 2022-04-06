@@ -16,8 +16,8 @@ const fiscal = require('fiscal-js');
 //or
 import { fiscal } from "fiscal-js";
 
-fiscal.futureValue(50000, 10, 5);
-// 80525.5
+fiscal.presentValue(50000, 10, 5).asFormattedString();
+// $31,046.07
 ```
 
 ## API
@@ -26,7 +26,7 @@ fiscal.futureValue(50000, 10, 5);
 Present value (PV) is the current value of a future sum of money or stream of cash flows given a specified rate of return.
 
 ```ts
-fiscal.presentValue(terminalValue: number, rate: number, numberOfYears: number)
+fiscal.presentValue(terminalValue: number, rate: number, numberOfYears: number): Currency
 ```
 
 ### Future Value (FV)

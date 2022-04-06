@@ -1,3 +1,5 @@
+import {Currency} from "./currency";
+
 const fiscal = require('./Fiscal.ts');
 
 test('calculating compound interest should equal 865865.07', () => {
@@ -21,13 +23,16 @@ test('calculating internal rate of return should be 225.53%', () => {
     expect(rate).toBe("225.53%")
 });
 
-test('calculating present value should be equal to 31046.07', () => {
+describe('PV: Present Value', () => {
+    test('calculating present value of $50,000 with a 10% rate over 10 years should be equal to $31,046.07', () => {
 
-    let pv = fiscal.presentValue(50000, 10, 5);
+        let pv: Currency = fiscal.presentValue(50000, 10, 5);
 
-    expect(pv).toBe(31046.07);
+        expect(pv.asFormattedString()).toBe("$31,046.07");
 
+    });
 });
+
 
 test('FV: calculating future value should be equal to 80525.5', () => {
 

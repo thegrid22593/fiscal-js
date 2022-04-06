@@ -1,7 +1,8 @@
 import { Percent } from "./percent";
+import {Currency} from "./currency";
 
 export interface IFiscal {
-    presentValue(terminalValue: number, rate: number, numberOfYears: number): number;
+    presentValue(terminalValue: number, rate: number, numberOfYears: number): Currency;
     futureValue(initialIvestment: number, rate: number, numberOfYears: number): number;
     netPresentValue(principal: number, rate: number, cashFlows: number[]): number;
     compountInterest(principal: number, rate: number , numberOfYears: number): string;
@@ -35,10 +36,10 @@ class Fiscal implements IFiscal {
      * Present value (PV) is the current value of a future sum of money 
      * or stream of cash flows given a specified rate of return.
      */
-    public presentValue(terminalValue: number, rate: number, numberOfYears: number) {
+    public presentValue(terminalValue: number, rate: number, numberOfYears: number): Currency {
         let percentRate = new Percent(rate).asDecimal();
         let pv = terminalValue / Math.pow(1 + percentRate, numberOfYears);
-        return Math.round(pv * 100) / 100;
+        return new Currency(Math.round(pv * 100) / 100);
     }
     
     /**
