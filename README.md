@@ -23,6 +23,10 @@ fiscal.presentValue(50000, 10, 5).asFormattedString();
 // You can pass a currency code as the first argument to get that format in currency
 fiscal.presentValue(50000, 10, 5).asFormattedString("EUR");
 // €31,046.07
+
+// You can pass a language code as the second argument to get the language format included with the currency
+fiscal.presentValue(50000, 10, 5).asFormattedString("EUR", "de-DE");
+// 31.046,07 €
 ```
 
 ## API
