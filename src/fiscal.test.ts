@@ -53,23 +53,25 @@ test('ROI: With an initial investment of $50,000 and earnings of $200,000 the re
 
 });
 
-test("CAGR: With an initial investment of $50,000 and an ending value of $100,000 over 5 years the compounded annual growth rate should b 15%", () => {
+describe("CAGR: Comounded Annual Growth Rate", () => {
 
-    let CAGR = fiscal.compoundedAnnualGrowthRate(50000, 100000, 5);
-
-    expect(CAGR).toBe("15%");
-
-});
-
-test('PI: With an initial payment due of $23,456, how many payments of $525 per interval until its paid off', () => {
-
-    let PI = fiscal.paybackIntervals(23456, 525)
-    
-    expect(PI).toBe(45);
+    test("With an initial investment of $50,000 and an ending value of $100,000 over 5 years the compounded annual growth rate should b 15%", () => {
+        let CAGR = fiscal.compoundedAnnualGrowthRate(50000, 100000, 5);
+        expect(CAGR).toBe("15%");
+    });
 
 });
 
-describe('amortization', () => {
+describe('PI: Payback Intervals', () => {
+
+    test('With an initial payment due of $23,456, how many payments of $525 per interval until its paid off', () => {
+        let PI = fiscal.paybackIntervals(23456, 525)
+        expect(PI).toBe(45);
+    });
+
+});
+
+describe('AM: Amortization', () => {
     
     test('With a total payment due of $17,000 paid per month over 5 years with a 2.71% rate, the price of the monthly payment should be $303.28', () => {
         let am = fiscal.amortization(17000, 2.71, 5);
@@ -80,6 +82,28 @@ describe('amortization', () => {
         let am = fiscal.amortization(17000, 2.71, 60, true);
         expect(am).toBe(303.28);
     });
-    
+
+});
+
+describe('LR: Leverage Ratio', () => {
+
+    test('Given $17,000 of liabilities and $20,000 of debt with $60,000 of income our leverage ratio should be 0.62', () => {
+        let LR = fiscal.leverageRatio(17000, 20000, 60000);
+        expect(LR).toBe(0.62);
+    });
+
+});
+
+describe('Salary', () => {
+
+    test('Given a $30/hr wage, your salary should be $62,400', () => {
+        let salary = fiscal.salary(30);
+        expect(salary).toBe(62400);
+    });
+
+    test('Given a $30/hr wage and a 8% tax rate your salary should be', () => {
+        let salary = fiscal.salary(30, 8);
+        expect(salary).toBe(57408);
+    });
 
 });

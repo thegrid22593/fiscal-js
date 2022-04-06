@@ -6,12 +6,14 @@ export interface IFiscal {
     netPresentValue(principal: number, rate: number, cashFlows: number[]): number;
     compountInterest(principal: number, rate: number , numberOfYears: number): string;
     simpleInterest(principal: number, rate: number, numberOfYears: number): string;
-    // internalRateOfReturn(principal: number, cashflows: number[]): string;
+    internalRateOfReturn(principal: number, cashflows: number[]): string;
     discountedCashFlow(principal:number, cashflows: number[], rate: number): number;
     returnOnInvestment(initialInvestment: number, earnings: number): string;
     compoundedAnnualGrowthRate(initialInvestment: number, terminalValue: number, numberOfYears: number): string;
     paybackIntervals(amountDue: number, intervalPaymentAmount: number): number;
-    amortization(principal: number, rate: number, totalNumberOfPayments: number, intervalInMonths: boolean, includeInitialPayment: boolean) : number
+    amortization(principal: number, rate: number, totalNumberOfPayments: number, intervalInMonths: boolean, includeInitialPayment: boolean) : number;
+    leverageRatio(liabilities: number, debts: number, totalIncome: number): number;
+    salary(hourlyRate: number, taxRate: number): number;
 }
 
 class Fiscal implements IFiscal {
@@ -19,7 +21,6 @@ class Fiscal implements IFiscal {
     private getDiscountedCashFlowRate(rate: number, year: number) {
         return Math.pow((1 + rate), year);
     }
-
 
     /**
      * 
@@ -229,15 +230,39 @@ class Fiscal implements IFiscal {
         return Math.round(monthlyPayment * 100) / 100;
     }
 
+    /**
+     * 
+     * @param liabilities 
+     * @param debts 
+     * @param totalIncome 
+     * @returns 
+     * 
+     * The leverage ratio is the proportion of debts that a bank has compared to its equity/capital
+     */
+    public leverageRatio(liabilities: number, debts: number, totalIncome: number): number {
+        let totalLiabilitiesAndDebt = liabilities + debts;
+        return Math.round((totalLiabilitiesAndDebt / totalIncome) * 100) / 100;
+    }
+
+    public salary(hourlyRate: number, taxRate: number = 0): number {
+        let weeksInYear = 52;
+        let workingHoursPerWeek = 40;
+
+        let yearlySalary = (hourlyRate * workingHoursPerWeek) * weeksInYear;
+        let taxes = yearlySalary * new Percent(taxRate).asDecimal();
+        return yearlySalary - taxes;
+    }
+
     //TODO: 
         // IIR - with irregular intervals
         // PP
         // PI
         // DF
-        // LR
         // WACC
         // CAPM
         // Stock calcs
+        // Hourly Wage Calculation
+        // Yearly Salary Calculation
 }
 
 module.exports = new Fiscal();
