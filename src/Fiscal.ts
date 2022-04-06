@@ -261,12 +261,19 @@ class Fiscal implements IFiscal {
         return yearlySalary - taxes;
     }
 
+    public returnAdjustedForInflation(inflationRate: number, returnOnInvestment: number): string {
+        let a = 1 + returnOnInvestment / 100;
+        let b = 1 + inflationRate / 100;
+        return new Percent(100 * ((a / b) - 1)).asString();
+    }
+
     //TODO: 
         // IIR - with irregular intervals
         // PP
         // PI
         // DF
         // WACC
+        // IAR
         // CAPM
         // Stock calcs
         // Hourly Wage Calculation
