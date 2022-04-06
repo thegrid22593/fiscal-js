@@ -94,3 +94,10 @@ The inflation-adjusted return is the measure of return that takes into account t
 ```ts
 fiscal.returnAdjustedForInflation(inflationRate: number, returnOnInvestment: number)
 ```
+
+
+### Weighted Average Cost of Capital (WACC)
+The weighted average cost of capital represents the average cost to attract investors, whether they're bondholders or stockholders. The calculation weights the cost of capital based on how much debt and equity the company uses, which provides a clear hurdle rate for internal projects or potential acquisitions.
+```ts
+fiscal.weightedAverageCostOfCapital(marketValueOfEquity: number, marketValueOfDebt: number, costOfEquity: number, costOfDebt: number, corporateTaxRate: number): string
+```

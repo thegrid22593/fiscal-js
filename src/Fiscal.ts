@@ -14,6 +14,7 @@ export interface IFiscal {
     amortization(principal: number, rate: number, totalNumberOfPayments: number, intervalInMonths: boolean, includeInitialPayment: boolean) : number;
     leverageRatio(liabilities: number, debts: number, totalIncome: number): number;
     getSalaryPerYear(hourlyRate: number, taxRate: number): number;
+    weightedAverageCostOfCapital(marketValueOfEquity: number, marketValueOfDebt: number, costOfEquity: number, costOfDebt: number, corporateTaxRate: number): string;
 }
 
 class Fiscal implements IFiscal {
@@ -286,12 +287,37 @@ class Fiscal implements IFiscal {
         return IAR.toFixed(2) + "%";
     }
 
+    /**
+     *
+     * @param marketValueOfEquity
+     * @param marketValueOfDebt
+     * @param costOfEquity
+     * @param costOfDebt
+     * @param corporateTaxRate
+     *
+     * The weighted average cost of capital represents the average cost to attract investors,
+     * whether they're bondholders or stockholders. The calculation weights the cost of capital
+     * based on how much debt and equity the company uses, which provides a clear hurdle rate
+     * for internal projects or potential acquisitions.
+     */
+    public weightedAverageCostOfCapital(marketValueOfEquity: number, marketValueOfDebt: number, costOfEquity: number, costOfDebt: number, corporateTaxRate: number): string {
+        let E = marketValueOfEquity;
+        let D = marketValueOfDebt;
+        let V =  E + D;
+        let Re = costOfEquity;
+        let Rd = costOfDebt;
+        let Tc = corporateTaxRate;
+
+        let WACC = ((E / V) * Re/100) + (((D / V) * Rd/100) * (1 - Tc/100));
+
+        return new Percent(Math.round(WACC * 1000) / 10).asString();
+    };
+
     //TODO: 
         // IIR - with irregular intervals
         // PP
         // PI
         // DF
-        // WACC
         // IAR
         // CAPM
         // Stock calcs

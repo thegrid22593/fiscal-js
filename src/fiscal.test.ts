@@ -110,9 +110,18 @@ describe('Salary', () => {
 
 describe('IAR: Inflation Adjusted Return', () => {
 
-    test('Given a 2.5% inflation rate, what is the value of a $1,000,000 return', () => {
+    test('Given a 2.5% inflation rate, what is the value of a $1,000,000 return 19.71%', () => {
         let IAR = fiscal.returnAdjustedForInflation(3, 23.3);
-        expect(IAR).toBe("19.72%");
+        expect(IAR).toBe("19.71%");
+    });
+
+});
+
+describe('WACC: Weighted Average Cost of Capital', () => {
+
+    test('Given a firms market value of equity to $400,000 and market value of debt to be $600,000 with a 15% cost of equity and 8% cost of debt along with a 2% corporate tax rate should return a 10.7% cost of capital', () => {
+        let IAR = fiscal.weightedAverageCostOfCapital(400000, 600000, 15, 8, 2);
+        expect(IAR).toBe("10.7%");
     });
 
 });
