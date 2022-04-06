@@ -1,6 +1,5 @@
 # fiscal-js
-
-Not ready for production use, use at your own risk
+A finance calculator inspired by the HP12-c to help you with your fiscal responsibilities and goals.
 
 ## Installation
 ```
