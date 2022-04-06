@@ -11,7 +11,7 @@ yarn add fiscal-js
 ```
 
 ## Usage
-```
+```ts
 const fiscal = require('fiscal-js');
 //or
 import { fiscal } from "fiscal-js";
