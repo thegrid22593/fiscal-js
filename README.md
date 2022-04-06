@@ -18,6 +18,9 @@ import { fiscal } from "fiscal-js";
 
 fiscal.presentValue(50000, 10, 5).asFormattedString();
 // $31,046.07
+
+fiscal.presentValue(50000, 10, 5).asFormattedString("EUR");
+// €31,046.07
 ```
 
 ## API
