@@ -16,7 +16,16 @@ const fiscal = require('fiscal-js');
 //or
 import { fiscal } from "fiscal-js";
 
-// asFormattedString will use en-US and USD by default
+// use asNumber to return a number value of the currency
+fiscal.presentValue(50000, 10, 5).asNumber();
+// 31046.07
+
+// use asString to return a string value of the currency
+fiscal.presentValue(50000, 10, 5).asString();
+// "31046.07"
+
+// use asFormattedString to return a string value formatted by default with en-US as
+// the language code and USD as the currency code
 fiscal.presentValue(50000, 10, 5).asFormattedString();
 // $31,046.07
 
