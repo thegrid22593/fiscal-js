@@ -40,3 +40,9 @@ Net present value or (NPV) is the present value of the cash flows at the require
 ```ts
 fiscal.netPresentValue(principal: number, rate: number, cashFlows: number[])
 ```
+
+### Compound Interest (CI)
+Compound interest (or compounding interest) is the interest on a loan or deposit calculated based on both the initial principal and the accumulated interest from previous periods.
+```ts
+fiscal.compountInterest(principal: number, rate: number , numberOfYears: number)
+```
