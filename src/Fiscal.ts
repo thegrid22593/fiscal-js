@@ -6,7 +6,7 @@ export interface IFiscal {
     netPresentValue(principal: number, rate: number, cashFlows: number[]): number;
     compountInterest(principal: number, rate: number , numberOfYears: number): string;
     simpleInterest(principal: number, rate: number, numberOfYears: number): string;
-    // internalRateOfReturn(principal: number, cashflows: number[], rate: number): string;
+    // internalRateOfReturn(principal: number, cashflows: number[]): string;
     discountedCashFlow(principal:number, cashflows: number[], rate: number): number;
     returnOnInvestment(initialInvestment: number, earnings: number): string;
     compoundedAnnualGrowthRate(initialInvestment: number, terminalValue: number, numberOfYears: number): string;
@@ -104,30 +104,51 @@ class Fiscal implements IFiscal {
         return finalAmount.toFixed(2);
     }
 
-    // The rate of return that makes the net present value (NPV) = 0 
-    // public internalRateOfReturn(principal: number, cashflows: number[], rate: number = 0): string {
-    //     let percentRate = rate / 100;
-        
-    //     let discountedCashFlows = cashflows.reduce((partialSum: number, cashflow: number, index: number) => {
-    //         let year = index + 1;
-    //         return partialSum + (cashflow / Math.pow(1+percentRate, year))
-    //     }, 0);
+    /**
+     * 
+     * @param principal 
+     * @param cashflows 
+     * @returns 
+     * 
+     * The internal rate of return (IRR) is a metric used in financial analysis to estimate the 
+     * profitability of potential investments. IRR is a discount rate that makes the net present
+     * value (NPV) of all cash flows equal to zero in a discounted cash flow analysis.
+     */
+    public internalRateOfReturn(principal: number, cashflows: number[]): string {
+        let numberOfCalcs = 1;
 
-    //     let npv = discountedCashFlows - principal;
+        if(principal > 0) {
+            principal = -Math.abs(principal);
+        }
 
-    //     if(npv > 1) {
-    //         return this.internalRateOfReturn(principal, cashflows, rate + 1);
-    //     }
+        function npv(rate: number) {
+            numberOfCalcs++;
+            if (numberOfCalcs > 1000) {
+                throw new Error('Can\'t find a result');
+            }
+            var percentRate = (1 + new Percent(rate).asDecimal());
+            var npv = principal;
+            for (var i = 0; i < cashflows.length; i++) {
+                npv += (cashflows[i] / Math.pow(percentRate, i + 1));
+            }
+            return npv;
+        }
 
-    //     if(Math.abs(npv).toFixed(2) == "0.00") {
-    //         return rate.toFixed(2) + "%";
-    //     }
+        function findZeroNPV(fn: (rate: number) => number) {
+            var x = 1;
+            while (fn(x) > 0) {
+                x += 1;
+            }
+            while (fn(x) < 0) {
+                x -= 0.01;
+            }
+            return x + 0.01;
+        }
 
-    //     if(Math.abs(npv).toFixed(1) == "0.1" || Math.abs(npv).toFixed(2) != "0.00") {
-    //        return this.internalRateOfReturn(principal, cashflows, rate + .01);
-    //     }
-        
-    // }
+        let rate = Math.round(findZeroNPV(npv) * 100) / 100;
+
+        return new Percent(rate).asString();
+    }
 
     // TODO: Does too much
     public discountedCashFlow(principal:number, cashflows: number[], rate: number): number {

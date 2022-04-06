@@ -14,12 +14,12 @@ test('calculating the discounted cash flows should return 278.46', () => {
     expect(value.toFixed(2)).toBe("278.46");
 });
 
-// test('calculating internal rate of return should be 47.23%', () => {
+test('calculating internal rate of return should be 225.53%', () => {
 
-//     let rate = fiscal.calculateInternalRateOfReturn(100, [60, 60, 60, 60]);
+    let rate = fiscal.internalRateOfReturn(100000, [200000, 300000, 200000, 500000]);
 
-//     expect(rate).toBe("47.23%")
-// });
+    expect(rate).toBe("225.53%")
+});
 
 test('calculating present value should be equal to 31046.07', () => {
 
@@ -72,12 +72,12 @@ test('PI: With an initial payment due of $23,456, how many payments of $525 per 
 describe('amortization', () => {
     
     test('With a total payment due of $17,000 paid per month over 5 years with a 2.71% rate, the price of the monthly payment should be $303.28', () => {
-        let am = fiscal.amortization(17000, 2.71, 5)
+        let am = fiscal.amortization(17000, 2.71, 5);
         expect(am).toBe(303.28);
     });
 
     test('With a total payment due of $17,000 paid per month over 60 months with a 2.71% rate, the price of monthly payment should be $303.28', () => {
-        let am = fiscal.amortization(17000, 2.71, 60, true)
+        let am = fiscal.amortization(17000, 2.71, 60, true);
         expect(am).toBe(303.28);
     });
     
