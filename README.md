@@ -22,6 +22,7 @@ fiscal.futureValue(50000, 10, 5);
 
 ## API
 **Future Value (FV)**
+
 ==fiscal.futureValue(principal: number, rate: number, numberOfIntervals: number)==
 ```
 const fiscal = require('fiscal-js');
