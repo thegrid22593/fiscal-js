@@ -16,6 +16,7 @@ interface IFiscal {
     leverageRatio(liabilities: number, debts: number, totalIncome: number): number;
     getSalaryPerYear(hourlyRate: number, taxRate: number): Currency;
     getSalaryPerMonth(hourlyRate: number, taxRate: number): Currency;
+    getHourlyWage(salary: number): Currency;
     weightedAverageCostOfCapital(marketValueOfEquity: number, marketValueOfDebt: number, costOfEquity: number, costOfDebt: number, corporateTaxRate: number): Percent;
     discountFactor(rate: number, numberOfIntervals: number): Percent;
     capitalAssetPricingModel(riskFreeRate: number, expectedMarketReturn: number, beta: number): Percent;
