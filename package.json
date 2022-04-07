@@ -1,6 +1,6 @@
 {
   "name": "fiscal-js",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "A fianance calculator inspired by the HP12-c to help you with your fiscal responsibilties and goals",
   "main": "./lib/Fiscal.js",
   "types": "./lib/Fiscal.d.ts",
