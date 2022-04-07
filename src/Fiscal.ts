@@ -1,19 +1,24 @@
 import { Percent } from "./percent";
+import {Currency} from "./currency";
 
-export interface IFiscal {
-    presentValue(terminalValue: number, rate: number, numberOfYears: number): number;
-    futureValue(initialIvestment: number, rate: number, numberOfYears: number): number;
-    netPresentValue(principal: number, rate: number, cashFlows: number[]): number;
-    compountInterest(principal: number, rate: number , numberOfYears: number): string;
-    simpleInterest(principal: number, rate: number, numberOfYears: number): string;
-    internalRateOfReturn(principal: number, cashflows: number[]): string;
-    discountedCashFlow(principal:number, cashflows: number[], rate: number): number;
-    returnOnInvestment(initialInvestment: number, earnings: number): string;
-    compoundedAnnualGrowthRate(initialInvestment: number, terminalValue: number, numberOfYears: number): string;
+interface IFiscal {
+    presentValue(terminalValue: number, rate: number, numberOfYears: number): Currency;
+    futureValue(initialInvestment: number, rate: number, numberOfYears: number): Currency;
+    netPresentValue(principal: number, rate: number, cashFlows: number[]): Currency;
+    compoundInterest(principal: number, rate: number , numberOfYears: number): Currency;
+    simpleInterest(principal: number, rate: number, numberOfYears: number): Currency;
+    internalRateOfReturn(principal: number, cashFlows: number[]): Percent;
+    discountedCashFlow(principal:number, cashFlows: number[], rate: number): Currency;
+    returnOnInvestment(initialInvestment: number, earnings: number): Percent;
+    compoundedAnnualGrowthRate(initialInvestment: number, terminalValue: number, numberOfYears: number): Percent;
     paybackIntervals(amountDue: number, intervalPaymentAmount: number): number;
-    amortization(principal: number, rate: number, totalNumberOfPayments: number, intervalInMonths: boolean, includeInitialPayment: boolean) : number;
+    amortization(principal: number, rate: number, totalNumberOfPayments: number, intervalInMonths: boolean, includeInitialPayment: boolean) : Currency;
     leverageRatio(liabilities: number, debts: number, totalIncome: number): number;
     getSalaryPerYear(hourlyRate: number, taxRate: number): number;
+    weightedAverageCostOfCapital(marketValueOfEquity: number, marketValueOfDebt: number, costOfEquity: number, costOfDebt: number, corporateTaxRate: number): Percent;
+    discountFactor(rate: number, numberOfIntervals: number): Percent;
+    capitalAssetPricingModel(riskFreeRate: number, expectedMarketReturn: number, beta: number): Percent;
+    profitabilityIndex(principal: number, rate: number, cashFlows: number[]): number;
 }
 
 class Fiscal implements IFiscal {
@@ -27,30 +32,30 @@ class Fiscal implements IFiscal {
      * @param terminalValue 
      * @param rate 
      * @param numberOfYears 
-     * @returns 
+     * @returns Currency
      * 
      * Present value (PV) is the current value of a future sum of money 
      * or stream of cash flows given a specified rate of return.
      */
-    public presentValue(terminalValue: number, rate: number, numberOfYears: number) {
+    public presentValue(terminalValue: number, rate: number, numberOfYears: number): Currency {
         let percentRate = new Percent(rate).asDecimal();
         let pv = terminalValue / Math.pow(1 + percentRate, numberOfYears);
-        return Math.round(pv * 100) / 100;
+        return new Currency(Math.round(pv * 100) / 100);
     }
     
     /**
      * 
-     * @param initialIvestment 
+     * @param initialInvestment
      * @param rate 
      * @param numberOfYears 
-     * @returns 
+     * @returns Currency
      * 
      * Future value, or FV, is what money is expected to be worth in the future.
      */
-    public futureValue(initialIvestment: number, rate: number, numberOfYears: number) {
+    public futureValue(initialInvestment: number, rate: number, numberOfYears: number): Currency {
         let percentRate = new Percent(rate).asDecimal();
-        let futureValue = initialIvestment * this.getDiscountedCashFlowRate(percentRate, numberOfYears);
-        return Math.round(futureValue * 100) / 100;
+        let futureValue = initialInvestment * this.getDiscountedCashFlowRate(percentRate, numberOfYears);
+        return new Currency(Math.round(futureValue * 100) / 100);
     }
 
     /**
@@ -58,18 +63,18 @@ class Fiscal implements IFiscal {
      * @param principal 
      * @param rate 
      * @param cashFlows 
-     * @returns 
+     * @returns Currency
      * 
      * Net present value is the present value of the cash flows at the required 
      * rate of return of your project compared to your initial investment.
      */
-    public netPresentValue(principal: number, rate: number, cashFlows: number[]) {
+    public netPresentValue(principal: number, rate: number, cashFlows: number[]): Currency {
         let percentRate = new Percent(rate).asDecimal();
         let netPresentValue = principal;
-        for(var i = 0; i < cashFlows.length; i++) {
+        for(let i = 0; i < cashFlows.length; i++) {
             netPresentValue += (cashFlows[i] / this.getDiscountedCashFlowRate(percentRate, i));
         }
-        return Math.round(netPresentValue * 100) / 100;
+        return new Currency(Math.round(netPresentValue * 100) / 100);
     }
 
     /**
@@ -77,16 +82,16 @@ class Fiscal implements IFiscal {
      * @param principal 
      * @param rate 
      * @param numberOfYears 
-     * @returns string
+     * @returns Currency
      * 
      * Compound interest (or compounding interest) is the interest on a loan or 
      * deposit calculated based on both the initial principal and the accumulated 
      * interest from previous periods.
      */
-    public compountInterest(principal: number, rate: number , numberOfYears: number): string {
+    public compoundInterest(principal: number, rate: number , numberOfYears: number): Currency {
         let percentRate = rate / 100;
         let rateTimesYearSum = Math.pow(1 + percentRate, numberOfYears);
-        return (principal * rateTimesYearSum).toFixed(2);
+        return new Currency(principal * rateTimesYearSum);
     }
 
     /**
@@ -94,28 +99,28 @@ class Fiscal implements IFiscal {
      * @param principal 
      * @param rate 
      * @param numberOfYears 
-     * @returns 
+     * @returns Currency
      * 
      * Simple interest is a method to calculate the amount of interest charged 
      * on a sum at a given rate and for a given period of time.
      */
-    public simpleInterest(principal: number, rate: number, numberOfYears: number): string {
+    public simpleInterest(principal: number, rate: number, numberOfYears: number): Currency {
         let percentRate = rate / 100;
         let finalAmount = principal * (1+(percentRate*numberOfYears));
-        return finalAmount.toFixed(2);
+        return new Currency(finalAmount);
     }
 
     /**
-     * 
-     * @param principal 
-     * @param cashflows 
-     * @returns 
-     * 
-     * The internal rate of return (IRR) is a metric used in financial analysis to estimate the 
+     *
+     * @param principal
+     * @param cashFlows
+     * @returns Percent
+     *
+     * The internal rate of return (IRR) is a metric used in financial analysis to estimate the
      * profitability of potential investments. IRR is a discount rate that makes the net present
      * value (NPV) of all cash flows equal to zero in a discounted cash flow analysis.
      */
-    public internalRateOfReturn(principal: number, cashflows: number[]): string {
+    public internalRateOfReturn(principal: number, cashFlows: number[]): Percent {
         let numberOfCalcs = 1;
 
         if(principal > 0) {
@@ -127,10 +132,10 @@ class Fiscal implements IFiscal {
             if (numberOfCalcs > 1000) {
                 throw new Error('Can\'t find a result');
             }
-            var percentRate = (1 + new Percent(rate).asDecimal());
-            var npv = principal;
-            for (var i = 0; i < cashflows.length; i++) {
-                npv += (cashflows[i] / Math.pow(percentRate, i + 1));
+            let percentRate = (1 + new Percent(rate).asDecimal());
+            let npv = principal;
+            for (let i = 0; i < cashFlows.length; i++) {
+                npv += (cashFlows[i] / Math.pow(percentRate, i + 1));
             }
             return npv;
         }
@@ -148,34 +153,44 @@ class Fiscal implements IFiscal {
 
         let rate = Math.round(findZeroNPV(npv) * 100) / 100;
 
-        return new Percent(rate).asString();
+        return new Percent(rate);
     }
 
-    // TODO: Does too much
-    public discountedCashFlow(principal:number, cashflows: number[], rate: number): number {
+    /**
+     * 
+     * @param principal 
+     * @param cashFlows
+     * @param rate 
+     * @returns Currency
+     * 
+     * Discounted cash flow (DCF) is a valuation method used to estimate the value of an investment 
+     * based on its expected future cash flows. DCF analysis attempts to figure out the value of an 
+     * investment today, based on projections of how much money it will generate in the future.
+     */
+    public discountedCashFlow(principal:number, cashFlows: number[], rate: number): Currency {
         let percentRate = new Percent(rate).asDecimal();
         
-        let discountedCashFlows = cashflows.reduce((partialSum, cashflow, index) => {
+        let discountedCashFlows = cashFlows.reduce((partialSum, cashFlow, index) => {
             let year = index + 1;
-            return partialSum + (cashflow / Math.pow(1+percentRate, year))
+            return partialSum + (cashFlow / Math.pow(1+percentRate, year))
         }, 0);
 
         let terminalValue = discountedCashFlows + principal;
-        return terminalValue;
+        return new Currency(terminalValue);
     }
 
     /**
      * 
      * @param initialInvestment 
      * @param earnings 
-     * @returns 
+     * @returns Percent
      * 
      * Return on Investment (ROI) is a popular profitability metric 
      * used to evaluate how well an investment has performed
      */
-    public returnOnInvestment(initialInvestment: number, earnings: number): string {
+    public returnOnInvestment(initialInvestment: number, earnings: number): Percent {
         let roi = (earnings - Math.abs(initialInvestment)) / Math.abs(initialInvestment) * 100;
-        return new Percent(Math.round(roi * 100) / 100).asString();
+        return new Percent(Math.round(roi * 100) / 100);
     }
     
     /**
@@ -183,14 +198,14 @@ class Fiscal implements IFiscal {
      * @param initialInvestment 
      * @param terminalValue 
      * @param numberOfYears 
-     * @returns string
+     * @returns Currency
      * 
      * Compound annual growth rate, or CAGR, is the mean annual growth rate of an 
      * investment over a specified period of time longer than one year.
      */
-    public compoundedAnnualGrowthRate(initialInvestment: number, terminalValue: number, numberOfYears: number): string {
+    public compoundedAnnualGrowthRate(initialInvestment: number, terminalValue: number, numberOfYears: number): Percent {
         let CAGR = Math.pow((terminalValue / initialInvestment), 1 / numberOfYears) - 1;
-        return new Percent(Math.round(CAGR * 100)).asString();
+        return new Percent(Math.round(CAGR * 100));
     }
 
     public paybackIntervals(amountDue: number, intervalPaymentAmount: number): number {
@@ -204,14 +219,14 @@ class Fiscal implements IFiscal {
      * @param totalNumberOfPayments 
      * @param intervalInMonths 
      * @param includeInitialPayment 
-     * @returns number
+     * @returns Currency
      * 
      * Amortization is paying off a debt over time in equal installments. 
      * Part of each payment goes toward the loan principal, and part goes toward interest. 
      * With mortgage loan amortization, the amount going toward principal starts out small, 
      * and gradually grows larger month by month.
      */
-    public amortization(principal: number, rate: number, totalNumberOfPayments: number, intervalInMonths: boolean = false, includeInitialPayment: boolean = false) : number {
+    public amortization(principal: number, rate: number, totalNumberOfPayments: number, intervalInMonths: boolean = false, includeInitialPayment: boolean = false) : Currency {
         let periodicInterestRate = new Percent(rate / 12).asDecimal();
 
         if(!intervalInMonths) {
@@ -227,7 +242,7 @@ class Fiscal implements IFiscal {
 
         let monthlyPayment = principal * (numerator / denominator);
 
-        return Math.round(monthlyPayment * 100) / 100;
+        return new Currency(Math.round(monthlyPayment * 100) / 100);
     }
 
     /**
@@ -261,6 +276,14 @@ class Fiscal implements IFiscal {
         return yearlySalary - taxes;
     }
 
+    /**
+     * 
+     * @param inflationRate 
+     * @param returnOnInvestment 
+     * @returns 
+     * 
+     * The inflation-adjusted return is the measure of return that takes into account the time period's inflation rate.
+     */
     public returnAdjustedForInflation(inflationRate: number, returnOnInvestment: number): string {
         let a = 1 + returnOnInvestment / 100;
         let b = 1 + inflationRate / 100;
@@ -268,14 +291,98 @@ class Fiscal implements IFiscal {
         return IAR.toFixed(2) + "%";
     }
 
+    /**
+     *
+     * @param marketValueOfEquity
+     * @param marketValueOfDebt
+     * @param costOfEquity
+     * @param costOfDebt
+     * @param corporateTaxRate
+     * @returns Percent
+     *
+     * The weighted average cost of capital represents the average cost to attract investors,
+     * whether they're bondholders or stockholders. The calculation weights the cost of capital
+     * based on how much debt and equity the company uses, which provides a clear hurdle rate
+     * for internal projects or potential acquisitions.
+     */
+    public weightedAverageCostOfCapital(marketValueOfEquity: number, marketValueOfDebt: number, costOfEquity: number, costOfDebt: number, corporateTaxRate: number): Percent {
+        let E = marketValueOfEquity;
+        let D = marketValueOfDebt;
+        let V =  E + D;
+        let Re = costOfEquity;
+        let Rd = costOfDebt;
+        let Tc = corporateTaxRate;
+
+        let WACC = ((E / V) * Re/100) + (((D / V) * Rd/100) * (1 - Tc/100));
+
+        return new Percent(Math.round(WACC * 1000) / 10);
+    };
+
+    /**
+     *
+     * @param rate
+     * @param numberOfIntervals
+     * @returns Percent
+     *
+     * Discount Factor is used to calculate what the value of receiving $1
+     * at some point in the future would be (the present value, or “PV”)
+     * based on the implied date of receipt and the discount rate assumption.
+     */
+    public discountFactor(rate: number, numberOfIntervals: number): Percent {
+        let R = new Percent(rate).asDecimal();
+        let T = numberOfIntervals;
+
+        let DF = (1 / Math.pow(1 + R, T));
+        return new Percent(Math.round(DF * 100));
+    }
+
+    /**
+     *
+     * @param riskFreeRate
+     * @param expectedMarketReturn
+     * @param beta
+     * @returns Percent
+     *
+     * The capital asset pricing model provides a formula that calculates the expected return
+     * on a security based on its level of risk. The formula for the capital asset pricing model
+     * is the risk-free rate plus beta times the difference of the return on the market and the risk-free rate.
+     *
+     */
+    public capitalAssetPricingModel(riskFreeRate: number, expectedMarketReturn: number, beta: number): Percent {
+       let ERm = new Percent(expectedMarketReturn).asDecimal();
+       let Rf = new Percent(riskFreeRate).asDecimal();
+       let Bi = beta;
+
+       let CAER = Rf + (Bi * (ERm - Rf));
+       return new Percent(Math.round(CAER * 100));
+    }
+
+    /**
+     *
+     * @param principal
+     * @param rate
+     * @param cashFlows
+     * @returns number
+     *
+     * The profitability index (PI) is a measure of a project's or investment's attractiveness.
+     * The PI is calculated by dividing the present value of future expected cash flows by the
+     * initial investment amount in the project.
+     */
+    public profitabilityIndex(principal: number, rate: number, cashFlows: number[]): number {
+        let percentRate = new Percent(rate).asDecimal();
+        let presentValueOfFutureCashFlows = 0;
+
+        for(let i = 0; i < cashFlows.length; i++) {
+            presentValueOfFutureCashFlows += cashFlows[0] * Math.pow(1 + percentRate, -(i + 1));
+        }
+
+        let PI = Math.round(100 * (presentValueOfFutureCashFlows / principal)) / 100;
+        return PI;
+    }
+
     //TODO: 
         // IIR - with irregular intervals
         // PP
-        // PI
-        // DF
-        // WACC
-        // IAR
-        // CAPM
         // Stock calcs
         // Hourly Wage Calculation
 }
