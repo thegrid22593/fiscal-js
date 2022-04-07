@@ -2,7 +2,7 @@
   "name": "fiscal-js",
   "version": "0.0.1",
   "description": "A fianance calculator inspired by the HP12-c to help you with your fiscal responsibilties and goals",
-  "main": "./lib/fiscal.js",
+  "main": "./lib/Fiscal.js",
   "scripts": {
     "build": "npx tsc",
     "test": "jest"
