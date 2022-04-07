@@ -137,3 +137,9 @@ The profitability index (PI) is a measure of a project's or investment's attract
 ```ts
 fiscal.profitabilityIndex(principal: number, rate: number, cashFlows: number[]): number
 ```
+
+### Rule of 72
+The Rule of 72 is a simple formula used to estimate the length of time required to double an investment. The rule of 72 is primarily used in off the cuff situations where an individual needs to make a quick calculation instead of working out the exact time it takes to double an investment.
+```ts
+fiscal.ruleOf72(rate: number): number
+```

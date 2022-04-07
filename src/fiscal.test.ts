@@ -175,3 +175,12 @@ describe('PI: Profitability Index', () => {
     });
 
 });
+
+describe('Rule of 72', () => {
+
+    test('Given a 6% rate the investment will double in 12 years', () => {
+        let a = fiscal.ruleOf72(6);
+        expect(a).toBe(12);
+    });
+
+});
