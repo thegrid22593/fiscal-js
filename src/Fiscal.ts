@@ -1,5 +1,5 @@
 import { Percent } from "./percent";
-import {Currency} from "./currency";
+import { Currency } from "./currency";
 
 interface IFiscal {
     presentValue(terminalValue: number, rate: number, numberOfYears: number): Currency;
@@ -22,7 +22,7 @@ interface IFiscal {
     ruleOf72(rate: number): number;
 }
 
-class Fiscal implements IFiscal {
+export class Fiscal implements IFiscal {
 
     private getDiscountedCashFlowRate(rate: number, year: number) {
         return Math.pow((1 + rate), year);
@@ -401,5 +401,3 @@ class Fiscal implements IFiscal {
         // Stock calcs
         // Hourly Wage Calculation
 }
-
-module.exports = new Fiscal();
