@@ -171,3 +171,21 @@ The Rule of 72 is a simple formula used to estimate the length of time required 
 ```ts
 fiscal.ruleOf72(rate: number): number
 ```
+
+### Salary Per Year
+Calculate a yearly salary by providing the hourly rate and the tax rate
+```ts
+fiscal.getSalaryPerYear(hourlyRate: number, taxRate: number): Currency;
+```
+
+### Salary Per Month
+Calculate a monthly salary by providing the hourly rate and the tax rate
+```ts
+fiscal.getSalaryPerMonth(hourlyRate: number, taxRate: number): Currency;
+```
+
+### Hourly Wage
+Determine your hourly wage based on the salary
+```ts
+fiscal.getHourlyWage(salary: number): Currency;
+```
