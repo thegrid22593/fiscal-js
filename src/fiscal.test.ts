@@ -9,7 +9,7 @@ describe('Fiscal Options', () => {
     test('Setting options in the fiscal constructor pipes down to currency', () => {
 
         let optionsFiscal = new Fiscal({
-            currency: {
+            format: {
                 languageCode: "de-DE",
                 currencyCode: "EUR"
             }
@@ -23,7 +23,7 @@ describe('Fiscal Options', () => {
     test('With options set in the fiscal constructor, users can still override the settings from the method', () => {
 
         let optionsFiscal = new Fiscal({
-            currency: {
+            format: {
                 languageCode: "de-DE",
                 currencyCode: "EUR"
             }
