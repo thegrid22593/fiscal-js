@@ -1,5 +1,5 @@
 import { Percent } from "./percent";
-import { Currency, ICurrencyOptions } from "./currency";
+import { Currency } from "./currency";
 interface IFiscal {
     presentValue(terminalValue: number, rate: number, numberOfYears: number): Currency;
     futureValue(initialInvestment: number, rate: number, numberOfYears: number): Currency;
@@ -20,8 +20,12 @@ interface IFiscal {
     profitabilityIndex(principal: number, rate: number, cashFlows: number[]): number;
     ruleOf72(rate: number): number;
 }
+export interface IFormatOptions {
+    currencyCode: string;
+    languageCode: string;
+}
 interface IFiscalOptions {
-    currency: ICurrencyOptions;
+    format: IFormatOptions;
 }
 export default class Fiscal implements IFiscal {
     private options;
