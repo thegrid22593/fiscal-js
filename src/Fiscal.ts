@@ -383,7 +383,6 @@ class Fiscal implements IFiscal {
     //TODO: 
         // IIR - with irregular intervals
         // PP
-        // PI
         // Stock calcs
         // Hourly Wage Calculation
 }
