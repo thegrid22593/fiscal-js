@@ -41,7 +41,7 @@ fiscal.presentValue(50000, 10, 5).asFormattedString("EUR", "de-DE");
 // 31.046,07 €
 ```
 
-## Specifying a Currency and Language Code
+## Specify a Currency and Language Code on Init
 ```ts
 const fiscal = new Fiscal({
     currency: {
@@ -53,7 +53,7 @@ const fiscal = new Fiscal({
 let formattedCurrency = fiscal.compoundInterest(92000, 7.5, 31).asFormattedString();
 // => 865.865,07 €
 
-// You can still override your options by specifying the language and currecy codes in the .asFormattedString() method on the Currency Class
+// You can still override your options by providing the language and currecy codes in the .asFormattedString() method on the Currency Class
 let formattedCurrency = fiscal.compoundInterest(92000, 7.5, 31).asFormattedString("USD", "en-US");
 // => $865,865.07
 ```
