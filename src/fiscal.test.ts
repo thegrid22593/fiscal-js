@@ -166,3 +166,12 @@ describe('CAPM: Capital Asset Pricing Model', () => {
     });
 
 });
+
+describe('PI: Profitability Index', () => {
+
+    test('Given a principal of $10,000 and a rate of 10% and three payments of $5,000 over three years the PI should be 1.24', () => {
+        let PI = fiscal.profitabilityIndex(10000, 10, [5000, 5000, 5000]);
+        expect(PI).toBe(1.24);
+    });
+
+});

@@ -17,7 +17,8 @@ interface IFiscal {
     getSalaryPerYear(hourlyRate: number, taxRate: number): number;
     weightedAverageCostOfCapital(marketValueOfEquity: number, marketValueOfDebt: number, costOfEquity: number, costOfDebt: number, corporateTaxRate: number): Percent;
     discountFactor(rate: number, numberOfIntervals: number): Percent;
-    capitalAssetPricingModel(riskFreeRate: number, expectedMarketReturn: number, beta: number): Percent
+    capitalAssetPricingModel(riskFreeRate: number, expectedMarketReturn: number, beta: number): Percent;
+    profitabilityIndex(principal: number, rate: number, cashFlows: number[]): number;
 }
 
 class Fiscal implements IFiscal {
@@ -70,7 +71,7 @@ class Fiscal implements IFiscal {
     public netPresentValue(principal: number, rate: number, cashFlows: number[]): Currency {
         let percentRate = new Percent(rate).asDecimal();
         let netPresentValue = principal;
-        for(var i = 0; i < cashFlows.length; i++) {
+        for(let i = 0; i < cashFlows.length; i++) {
             netPresentValue += (cashFlows[i] / this.getDiscountedCashFlowRate(percentRate, i));
         }
         return new Currency(Math.round(netPresentValue * 100) / 100);
@@ -354,6 +355,29 @@ class Fiscal implements IFiscal {
 
        let CAER = Rf + (Bi * (ERm - Rf));
        return new Percent(Math.round(CAER * 100));
+    }
+
+    /**
+     *
+     * @param principal
+     * @param rate
+     * @param cashFlows
+     * @returns number
+     *
+     * The profitability index (PI) is a measure of a project's or investment's attractiveness.
+     * The PI is calculated by dividing the present value of future expected cash flows by the
+     * initial investment amount in the project.
+     */
+    public profitabilityIndex(principal: number, rate: number, cashFlows: number[]): number {
+        let percentRate = new Percent(rate).asDecimal();
+        let presentValueOfFutureCashFlows = 0;
+
+        for(let i = 0; i < cashFlows.length; i++) {
+            presentValueOfFutureCashFlows += cashFlows[0] * Math.pow(1 + percentRate, -(i + 1));
+        }
+
+        let PI = Math.round(100 * (presentValueOfFutureCashFlows / principal)) / 100;
+        return PI;
     }
 
     //TODO: 
