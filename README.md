@@ -12,9 +12,12 @@ yarn add fiscal-js
 
 ## Usage
 ```ts
-const fiscal = require('fiscal-js');
+const Fiscal = require('fiscal-js');
 //or
-import { fiscal } from "fiscal-js";
+import Fiscal from "fiscal-js";
+
+// Fiscal will use en-US and USD and default formats
+const fiscal = new Fiscal();
 
 // use asNumber to return a number value of the currency
 fiscal.presentValue(50000, 10, 5).asNumber();
@@ -36,6 +39,23 @@ fiscal.presentValue(50000, 10, 5).asFormattedString("EUR");
 // You can pass a language code as the second argument to get the language format included with the currency
 fiscal.presentValue(50000, 10, 5).asFormattedString("EUR", "de-DE");
 // 31.046,07 €
+```
+
+## Specify a Currency and Language Code on Init
+```ts
+const fiscal = new Fiscal({
+    currency: {
+        languageCode: "de-DE",
+        currencyCode: "EUR"
+    }
+});
+
+let formattedCurrency = fiscal.compoundInterest(92000, 7.5, 31).asFormattedString();
+// => 865.865,07 €
+
+// You can still override your options by providing the language and currecy codes in the .asFormattedString() method on the Currency Class
+let formattedCurrency = fiscal.compoundInterest(92000, 7.5, 31).asFormattedString("USD", "en-US");
+// => $865,865.07
 ```
 
 ## API
@@ -136,4 +156,10 @@ fiscal.capitalAssetPricingModel(riskFreeRate: number, expectedMarketReturn: numb
 The profitability index (PI) is a measure of a project's or investment's attractiveness. The PI is calculated by dividing the present value of future expected cash flows by the initial investment amount in the project.
 ```ts
 fiscal.profitabilityIndex(principal: number, rate: number, cashFlows: number[]): number
+```
+
+### Rule of 72
+The Rule of 72 is a simple formula used to estimate the length of time required to double an investment. The rule of 72 is primarily used in off the cuff situations where an individual needs to make a quick calculation instead of working out the exact time it takes to double an investment.
+```ts
+fiscal.ruleOf72(rate: number): number
 ```

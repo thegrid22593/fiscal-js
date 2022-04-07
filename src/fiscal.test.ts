@@ -1,6 +1,40 @@
 import {Currency} from "./currency";
 
-const fiscal = require('./Fiscal.ts');
+import Fiscal from "./Fiscal";
+
+const fiscal = new Fiscal();
+
+describe('Fiscal Options', () => {
+
+    test('Setting options in the fiscal constructor pipes down to currency', () => {
+
+        let optionsFiscal = new Fiscal({
+            currency: {
+                languageCode: "de-DE",
+                currencyCode: "EUR"
+            }
+        });
+
+        let formattedCurrency = optionsFiscal.compoundInterest(92000, 7.5, 31).asFormattedString();
+        expect(formattedCurrency).toBe("865.865,07 €");
+
+    });
+
+    test('With options set in the fiscal constructor, users can still override the settings from the method', () => {
+
+        let optionsFiscal = new Fiscal({
+            currency: {
+                languageCode: "de-DE",
+                currencyCode: "EUR"
+            }
+        });
+
+        let formattedCurrency = optionsFiscal.compoundInterest(92000, 7.5, 31).asFormattedString("USD", "en-US");
+        expect(formattedCurrency).toBe("$865,865.07");
+
+    });
+
+});
 
 describe('DCF: Discounted Cash Flow', () => {
 
@@ -172,6 +206,15 @@ describe('PI: Profitability Index', () => {
     test('Given a principal of $10,000 and a rate of 10% and three payments of $5,000 over three years the PI should be 1.24', () => {
         let PI = fiscal.profitabilityIndex(10000, 10, [5000, 5000, 5000]);
         expect(PI).toBe(1.24);
+    });
+
+});
+
+describe('Rule of 72', () => {
+
+    test('Given a 6% rate the investment will double in 12 years', () => {
+        let a = fiscal.ruleOf72(6);
+        expect(a).toBe(12);
     });
 
 });

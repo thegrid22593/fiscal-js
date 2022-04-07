@@ -1,5 +1,5 @@
 import { Percent } from "./percent";
-import {Currency} from "./currency";
+import { Currency, ICurrencyOptions } from "./currency";
 
 interface IFiscal {
     presentValue(terminalValue: number, rate: number, numberOfYears: number): Currency;
@@ -19,9 +19,25 @@ interface IFiscal {
     discountFactor(rate: number, numberOfIntervals: number): Percent;
     capitalAssetPricingModel(riskFreeRate: number, expectedMarketReturn: number, beta: number): Percent;
     profitabilityIndex(principal: number, rate: number, cashFlows: number[]): number;
+    ruleOf72(rate: number): number;
 }
 
-class Fiscal implements IFiscal {
+interface IFiscalOptions {
+    currency: ICurrencyOptions
+}
+
+export default class Fiscal implements IFiscal {
+
+    private options: IFiscalOptions;
+
+    constructor(options: IFiscalOptions = {
+        currency: {
+            languageCode: "en-US",
+            currencyCode: "USD"
+        }
+    }) {
+        this.options = options;
+    }
 
     private getDiscountedCashFlowRate(rate: number, year: number) {
         return Math.pow((1 + rate), year);
@@ -40,7 +56,7 @@ class Fiscal implements IFiscal {
     public presentValue(terminalValue: number, rate: number, numberOfYears: number): Currency {
         let percentRate = new Percent(rate).asDecimal();
         let pv = terminalValue / Math.pow(1 + percentRate, numberOfYears);
-        return new Currency(Math.round(pv * 100) / 100);
+        return new Currency(Math.round(pv * 100) / 100, this.options.currency);
     }
     
     /**
@@ -55,7 +71,7 @@ class Fiscal implements IFiscal {
     public futureValue(initialInvestment: number, rate: number, numberOfYears: number): Currency {
         let percentRate = new Percent(rate).asDecimal();
         let futureValue = initialInvestment * this.getDiscountedCashFlowRate(percentRate, numberOfYears);
-        return new Currency(Math.round(futureValue * 100) / 100);
+        return new Currency(Math.round(futureValue * 100) / 100, this.options.currency);
     }
 
     /**
@@ -74,7 +90,7 @@ class Fiscal implements IFiscal {
         for(let i = 0; i < cashFlows.length; i++) {
             netPresentValue += (cashFlows[i] / this.getDiscountedCashFlowRate(percentRate, i));
         }
-        return new Currency(Math.round(netPresentValue * 100) / 100);
+        return new Currency(Math.round(netPresentValue * 100) / 100, this.options.currency);
     }
 
     /**
@@ -91,7 +107,7 @@ class Fiscal implements IFiscal {
     public compoundInterest(principal: number, rate: number , numberOfYears: number): Currency {
         let percentRate = rate / 100;
         let rateTimesYearSum = Math.pow(1 + percentRate, numberOfYears);
-        return new Currency(principal * rateTimesYearSum);
+        return new Currency(principal * rateTimesYearSum, this.options.currency);
     }
 
     /**
@@ -107,7 +123,7 @@ class Fiscal implements IFiscal {
     public simpleInterest(principal: number, rate: number, numberOfYears: number): Currency {
         let percentRate = rate / 100;
         let finalAmount = principal * (1+(percentRate*numberOfYears));
-        return new Currency(finalAmount);
+        return new Currency(finalAmount, this.options.currency);
     }
 
     /**
@@ -176,7 +192,7 @@ class Fiscal implements IFiscal {
         }, 0);
 
         let terminalValue = discountedCashFlows + principal;
-        return new Currency(terminalValue);
+        return new Currency(terminalValue, this.options.currency);
     }
 
     /**
@@ -242,7 +258,7 @@ class Fiscal implements IFiscal {
 
         let monthlyPayment = principal * (numerator / denominator);
 
-        return new Currency(Math.round(monthlyPayment * 100) / 100);
+        return new Currency(Math.round(monthlyPayment * 100) / 100, this.options.currency);
     }
 
     /**
@@ -380,11 +396,23 @@ class Fiscal implements IFiscal {
         return PI;
     }
 
+    /**
+     * 
+     * @param rate 
+     * @returns number
+     * 
+     * The Rule of 72 is a simple formula used to estimate the length of time required
+     *  to double an investment. The rule of 72 is primarily used in off the cuff 
+     * situations where an individual needs to make a quick calculation instead 
+     * of working out the exact time it takes to double an investment.
+     */
+    public ruleOf72(rate: number): number {
+        return 72 / rate; 
+    }
+
     //TODO: 
         // IIR - with irregular intervals
         // PP
         // Stock calcs
         // Hourly Wage Calculation
 }
-
-module.exports = new Fiscal();

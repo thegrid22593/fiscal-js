@@ -2,7 +2,7 @@
     "exclude": ["node_modules", "./src/**/*.test.ts"],
     "include": ["./src/**/*.ts"],
     "compilerOptions": {
-      // "declaration": true,
+      "declaration": true,
       "sourceMap": true,
       "removeComments": true,
       "outDir": "./lib/",
