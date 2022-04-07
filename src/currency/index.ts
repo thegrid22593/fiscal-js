@@ -1,20 +1,17 @@
+import { IFormatOptions } from "../Fiscal";
+
 export interface ICurrency {
     asString(): string;
     asNumber(): number;
     asFormattedString(languageCode: string, currencyCode: string): string;
 }
 
-export interface ICurrencyOptions {
-    languageCode: string;
-    currencyCode: string;
-}
-
 export class Currency implements ICurrency {
 
     private readonly currency: number;
-    private readonly options: ICurrencyOptions;
+    private readonly options: IFormatOptions;
 
-    public constructor(currency: number, options: ICurrencyOptions = {
+    public constructor(currency: number, options: IFormatOptions = {
         languageCode: "en-US",
         currencyCode: "USD"
     }) {

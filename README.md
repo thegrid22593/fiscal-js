@@ -44,7 +44,7 @@ fiscal.presentValue(50000, 10, 5).asFormattedString("EUR", "de-DE");
 ## Specify a Currency and Language Code on Init
 ```ts
 const fiscal = new Fiscal({
-    currency: {
+    format: {
         languageCode: "de-DE",
         currencyCode: "EUR"
     }
@@ -56,6 +56,14 @@ let formattedCurrency = fiscal.compoundInterest(92000, 7.5, 31).asFormattedStrin
 // You can still override your options by providing the language and currecy codes in the .asFormattedString() method on the Currency Class
 let formattedCurrency = fiscal.compoundInterest(92000, 7.5, 31).asFormattedString("USD", "en-US");
 // => $865,865.07
+```
+
+## Working with Percents
+```ts
+const fiscal = new Fiscal();
+
+fiscal.discountFactor(6, 5).asDecimal(); // => 0.75
+fiscal.discountFactor(6, 5).asString(); // => "75%"
 ```
 
 ## API
