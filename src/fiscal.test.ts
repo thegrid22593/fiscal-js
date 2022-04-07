@@ -155,12 +155,27 @@ describe('Salary', () => {
 
     test('Given a $30/hr wage, your salary should be $62,400', () => {
         let salary = fiscal.getSalaryPerYear(30);
-        expect(salary).toBe(62400);
+        expect(salary.asNumber()).toBe(62400);
     });
 
     test('Given a $30/hr wage and a 8% tax rate your salary should be', () => {
         let salary = fiscal.getSalaryPerYear(30, 8);
-        expect(salary).toBe(57408);
+        expect(salary.asNumber()).toBe(57408);
+    });
+
+    test('Given a $30/hr wage, your income per month $4,800', () => {
+        let salary = fiscal.getSalaryPerMonth(30);
+        expect(salary.asNumber()).toBe(4800);
+    });
+
+    test('Given a $30/hr wage and a 8% tax rate your income per month should be $4,768', () => {
+        let salary = fiscal.getSalaryPerMonth(30, 8);
+        expect(salary.asNumber()).toBe(4768);
+    });
+
+    test('Given a $62,400 salary per year, the hourly wage for a 40 hour work week should be: $30', () => {
+        let salary = fiscal.getHourlyWage(62400);
+        expect(salary.asNumber()).toBe(30);
     });
 
 });

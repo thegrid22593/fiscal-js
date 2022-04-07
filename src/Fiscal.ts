@@ -14,7 +14,8 @@ interface IFiscal {
     paybackIntervals(amountDue: number, intervalPaymentAmount: number): number;
     amortization(principal: number, rate: number, totalNumberOfPayments: number, intervalInMonths: boolean, includeInitialPayment: boolean) : Currency;
     leverageRatio(liabilities: number, debts: number, totalIncome: number): number;
-    getSalaryPerYear(hourlyRate: number, taxRate: number): number;
+    getSalaryPerYear(hourlyRate: number, taxRate: number): Currency;
+    getSalaryPerMonth(hourlyRate: number, taxRate: number): Currency;
     weightedAverageCostOfCapital(marketValueOfEquity: number, marketValueOfDebt: number, costOfEquity: number, costOfDebt: number, corporateTaxRate: number): Percent;
     discountFactor(rate: number, numberOfIntervals: number): Percent;
     capitalAssetPricingModel(riskFreeRate: number, expectedMarketReturn: number, beta: number): Percent;
@@ -288,13 +289,46 @@ export default class Fiscal implements IFiscal {
      * 
      * Determine your yearly salary based on the hourly rate
      */
-    public getSalaryPerYear(hourlyRate: number, taxRate: number = 0): number {
+    public getSalaryPerYear(hourlyRate: number, taxRate: number = 0): Currency {
         let weeksInYear = 52;
         let workingHoursPerWeek = 40;
 
         let yearlySalary = (hourlyRate * workingHoursPerWeek) * weeksInYear;
         let taxes = yearlySalary * new Percent(taxRate).asDecimal();
-        return yearlySalary - taxes;
+        return new Currency(yearlySalary - taxes);
+    }
+
+    /**
+     * 
+     * @param hourlyRate 
+     * @param taxRate 
+     * @returns 
+     * 
+     * Determine your monthly salary based on the hourly rate
+     */
+     public getSalaryPerMonth(hourlyRate: number, taxRate: number = 0): Currency {
+        let weeksPerMonth = 4;
+        let workingHoursPerWeek = 40;
+
+        let monthlySalary = (hourlyRate * workingHoursPerWeek) * weeksPerMonth;
+        let taxes = monthlySalary * new Percent(taxRate / 12).asDecimal();
+        return new Currency(monthlySalary - taxes);
+    }
+
+    /**
+     * 
+     * @param hourlyRate 
+     * @param taxRate 
+     * @returns 
+     * 
+     * Determine your hourly wage based on the salary
+     */
+     public getHourlyWage(salary: number): Currency {
+        let weeksPerYear = 52;
+        let workingHoursPerWeek = 40;
+
+        let hourlyWage = (salary / weeksPerYear) / workingHoursPerWeek;
+        return new Currency(hourlyWage);
     }
 
     /**
