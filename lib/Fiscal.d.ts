@@ -1,5 +1,5 @@
 import { Percent } from "./percent";
-import { Currency, ICurrencyOptions } from "./currency";
+import { Currency } from "./currency";
 interface IFiscal {
     presentValue(terminalValue: number, rate: number, numberOfYears: number): Currency;
     futureValue(initialInvestment: number, rate: number, numberOfYears: number): Currency;
@@ -13,15 +13,21 @@ interface IFiscal {
     paybackIntervals(amountDue: number, intervalPaymentAmount: number): number;
     amortization(principal: number, rate: number, totalNumberOfPayments: number, intervalInMonths: boolean, includeInitialPayment: boolean): Currency;
     leverageRatio(liabilities: number, debts: number, totalIncome: number): number;
-    getSalaryPerYear(hourlyRate: number, taxRate: number): number;
+    getSalaryPerYear(hourlyRate: number, taxRate: number): Currency;
+    getSalaryPerMonth(hourlyRate: number, taxRate: number): Currency;
+    getHourlyWage(salary: number): Currency;
     weightedAverageCostOfCapital(marketValueOfEquity: number, marketValueOfDebt: number, costOfEquity: number, costOfDebt: number, corporateTaxRate: number): Percent;
     discountFactor(rate: number, numberOfIntervals: number): Percent;
     capitalAssetPricingModel(riskFreeRate: number, expectedMarketReturn: number, beta: number): Percent;
     profitabilityIndex(principal: number, rate: number, cashFlows: number[]): number;
     ruleOf72(rate: number): number;
 }
+export interface IFormatOptions {
+    currencyCode: string;
+    languageCode: string;
+}
 interface IFiscalOptions {
-    currency: ICurrencyOptions;
+    format: IFormatOptions;
 }
 export default class Fiscal implements IFiscal {
     private options;
@@ -39,7 +45,9 @@ export default class Fiscal implements IFiscal {
     paybackIntervals(amountDue: number, intervalPaymentAmount: number): number;
     amortization(principal: number, rate: number, totalNumberOfPayments: number, intervalInMonths?: boolean, includeInitialPayment?: boolean): Currency;
     leverageRatio(liabilities: number, debts: number, totalIncome: number): number;
-    getSalaryPerYear(hourlyRate: number, taxRate?: number): number;
+    getSalaryPerYear(hourlyRate: number, taxRate?: number): Currency;
+    getSalaryPerMonth(hourlyRate: number, taxRate?: number): Currency;
+    getHourlyWage(salary: number): Currency;
     returnAdjustedForInflation(inflationRate: number, returnOnInvestment: number): string;
     weightedAverageCostOfCapital(marketValueOfEquity: number, marketValueOfDebt: number, costOfEquity: number, costOfDebt: number, corporateTaxRate: number): Percent;
     discountFactor(rate: number, numberOfIntervals: number): Percent;
