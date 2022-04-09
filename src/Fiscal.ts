@@ -32,7 +32,7 @@ export interface IFormatOptions {
     languageCode: string;
 }
 
-interface IFiscalOptions {
+export interface IFiscalOptions {
     format: IFormatOptions
 }
 
@@ -48,7 +48,7 @@ export default class Fiscal implements IFiscal {
         }
     }) {
         this.options = options;
-        this.amortizationV2 = new Amortization();
+        this.amortizationV2 = new Amortization(this.options);
     }
 
     private getDiscountedCashFlowRate(rate: number, year: number) {
