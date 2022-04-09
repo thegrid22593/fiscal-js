@@ -3,7 +3,7 @@ import {Currency} from "../currency";
 import {IFiscalOptions, IFormatOptions} from "../Fiscal";
 
 export interface IAmortization {
-    forInterest(principal: number, payment: number, totalNumberOfPeriods: number, intervalInMonths: boolean, includeInitialPayment: boolean): Percent;
+    forInterest(principal: number, payment: number, periods: number, periodsInMonths: boolean, includeInitialPayment: boolean): Percent;
     forPresentValue(payment: number, rate: number, totalNumberOfPeriods: number, intervalInMonths: boolean, includeInitialPayment: boolean): Currency;
     forMonthlyPayment(principal: number, rate: number, totalNumberOfPeriods: number, intervalInMonths: boolean, includeInitialPayment: boolean) : Currency;
     forNumberOfPeriods(principal: number, rate: number, intervalInMonths: boolean, includeInitialPayment: boolean): number;
@@ -29,17 +29,27 @@ export class Amortization implements IAmortization {
      * @param principal
      * @param payment
      * @param totalNumberOfPeriods
-     * @param intervalInMonths
+     * @param periodsInMonths
      * @param includeInitialPayment
      */
-    forInterest(principal: number, payment: number, totalNumberOfPeriods: number, intervalInMonths: boolean = false, includeInitialPayment: boolean = false): Percent {
+    forInterest(principal: number, payment: number, totalNumberOfPeriods: number, periodsInMonths: boolean = false, includeInitialPayment: boolean = false): Percent {
+        let periods = totalNumberOfPeriods;
+        let years, months;
 
-        if(!intervalInMonths) {
-            totalNumberOfPeriods = totalNumberOfPeriods * 12;
+        if(!periodsInMonths) {
+            years = periods;
+            months = periods * 12;
+        } else {
+            years = periods / 12;
+            months = periods;
         }
 
-        let paidWithInterest = (payment * totalNumberOfPeriods);
-        let interest = (paidWithInterest / principal);
+        if(includeInitialPayment) {
+            periods--;
+        }
+
+        let simpleInterest = (payment * months) - principal;
+        let interest = Math.round((simpleInterest * 100) / (principal * years));
 
         return new Percent(interest);
     }
