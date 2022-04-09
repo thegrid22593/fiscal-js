@@ -1,5 +1,5 @@
 Arguments: 
-  /usr/local/bin/node /usr/local/bin/yarn publish
+  /usr/local/bin/node /usr/local/bin/yarn add scarf-js
 
 PATH: 
   /usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/Users/garrettsanderson/Development/fiscal-js/node_modules/.bin
@@ -14,7 +14,7 @@ Platform:
   darwin x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/-/user/org.couchdb.user:thegrid22593: failed to authenticate: Could not authenticate thegrid22593: bad password
+  Error: https://registry.yarnpkg.com/scarf-js: Not found
       at Request.params.callback [as _callback] (/usr/local/lib/node_modules/yarn/lib/cli.js:66830:18)
       at Request.self.callback (/usr/local/lib/node_modules/yarn/lib/cli.js:140464:22)
       at Request.emit (node:events:526:28)
