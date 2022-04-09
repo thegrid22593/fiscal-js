@@ -198,6 +198,15 @@ describe('WACC: Weighted Average Cost of Capital', () => {
 
 });
 
+describe('Percent Of', () => {
+
+    test('6% of $123,720 should be $7,423.20', () => {
+        let PO = fiscal.percentOf(6, 123720);
+        expect(PO.asFormattedString()).toBe("$7,423.20");
+    });
+
+});
+
 describe('DF: Discount Factor', () => {
 
     test('Given a rate of 6% and 5 compounding intervals the discount factor should be 0.75', () => {

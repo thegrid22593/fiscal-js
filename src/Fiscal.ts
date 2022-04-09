@@ -22,7 +22,8 @@ interface IFiscal {
     capitalAssetPricingModel(riskFreeRate: number, expectedMarketReturn: number, beta: number): Percent;
     profitabilityIndex(principal: number, rate: number, cashFlows: number[]): number;
     ruleOf72(rate: number): number;
-    yearOverYear(currentYear: number, pastYear: number): Percent
+    yearOverYear(currentYear: number, pastYear: number): Percent;
+    percentOf(percent: number, value: number): Currency;
 }
 
 export interface IFormatOptions {
@@ -458,6 +459,10 @@ export default class Fiscal implements IFiscal {
      */
     public yearOverYear(currentYear: number, pastYear: number): Percent {
         return new Percent((((currentYear - pastYear) / pastYear) * 100));
+    }
+
+    public percentOf(percent: number, value: number): Currency {
+        return new Currency(value * new Percent(percent).asDecimal());
     }
 
     //TODO: 
