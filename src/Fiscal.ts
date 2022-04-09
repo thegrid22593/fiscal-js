@@ -1,7 +1,9 @@
 import { Percent } from "./percent";
 import { Currency } from "./currency";
+import {Amortization, IAmortization} from "./amortization";
 
 interface IFiscal {
+    amortizationV2: IAmortization;
     presentValue(terminalValue: number, rate: number, numberOfYears: number): Currency;
     futureValue(initialInvestment: number, rate: number, numberOfYears: number): Currency;
     netPresentValue(principal: number, rate: number, cashFlows: number[]): Currency;
@@ -37,6 +39,7 @@ interface IFiscalOptions {
 export default class Fiscal implements IFiscal {
 
     private options: IFiscalOptions;
+    amortizationV2: IAmortization;
 
     constructor(options: IFiscalOptions = {
         format: {
@@ -45,6 +48,7 @@ export default class Fiscal implements IFiscal {
         }
     }) {
         this.options = options;
+        this.amortizationV2 = new Amortization();
     }
 
     private getDiscountedCashFlowRate(rate: number, year: number) {
