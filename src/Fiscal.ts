@@ -460,6 +460,18 @@ export default class Fiscal implements IFiscal {
         return new Percent((((currentYear - pastYear) / pastYear) * 100));
     }
 
+    // TODO:
+        // Version 1.3.0
+            // Amortization currently only solves for monthly payment
+                // Solve for interest
+                    // fiscal.amortization.forInterest()
+                // Solve for present value
+                    // fiscal.amortization.forPresentValue()
+                // Solve for monthly payment
+                    // fiscal.amortization.forMonthlyPayment()
+                // Solve for number of payments
+                    // fiscal.amortization.forNumberOfPeriods
+
     //TODO: 
         // IIR - with irregular intervals
         // PP
