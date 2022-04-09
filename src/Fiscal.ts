@@ -22,6 +22,7 @@ interface IFiscal {
     capitalAssetPricingModel(riskFreeRate: number, expectedMarketReturn: number, beta: number): Percent;
     profitabilityIndex(principal: number, rate: number, cashFlows: number[]): number;
     ruleOf72(rate: number): number;
+    yearOverYear(currentYear: number, pastYear: number): Percent
 }
 
 export interface IFormatOptions {
@@ -448,6 +449,15 @@ export default class Fiscal implements IFiscal {
      */
     public ruleOf72(rate: number): number {
         return 72 / rate; 
+    }
+
+    /**
+     * Year over year (YOY) is a financial formula that represents the annual
+     * increase or decrease for a particular metric
+     *
+     */
+    public yearOverYear(currentYear: number, pastYear: number): Percent {
+        return new Percent((((currentYear - pastYear) / pastYear) * 100));
     }
 
     //TODO: 

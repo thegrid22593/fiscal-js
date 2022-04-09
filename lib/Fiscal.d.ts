@@ -21,6 +21,7 @@ interface IFiscal {
     capitalAssetPricingModel(riskFreeRate: number, expectedMarketReturn: number, beta: number): Percent;
     profitabilityIndex(principal: number, rate: number, cashFlows: number[]): number;
     ruleOf72(rate: number): number;
+    yearOverYear(currentYear: number, pastYear: number): Percent;
 }
 export interface IFormatOptions {
     currencyCode: string;
@@ -54,5 +55,6 @@ export default class Fiscal implements IFiscal {
     capitalAssetPricingModel(riskFreeRate: number, expectedMarketReturn: number, beta: number): Percent;
     profitabilityIndex(principal: number, rate: number, cashFlows: number[]): number;
     ruleOf72(rate: number): number;
+    yearOverYear(currentYear: number, pastYear: number): Percent;
 }
 export {};

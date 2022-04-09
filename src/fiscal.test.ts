@@ -233,3 +233,12 @@ describe('Rule of 72', () => {
     });
 
 });
+
+describe('YoY: Year over Year', () => {
+
+    test('Given a total amount of 2200 in the current year and 2000 in the year prior the YoY growth should be 10%', () => {
+        let YoY = fiscal.yearOverYear(2200, 2000);
+        expect(YoY.asString()).toBe("10%");
+    });
+
+});

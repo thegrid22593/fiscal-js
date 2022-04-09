@@ -189,3 +189,9 @@ Determine your hourly wage based on the salary
 ```ts
 fiscal.getHourlyWage(salary: number): Currency;
 ```
+
+### Year Over Year
+Year over year (YOY) is a financial formula that represents the annual increase or decrease for a particular metric
+```ts
+fiscal.yearOverYear(currentYear: number, pastYear: number): Percent;
+```
