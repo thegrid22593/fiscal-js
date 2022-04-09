@@ -22,6 +22,7 @@ interface IFiscal {
     profitabilityIndex(principal: number, rate: number, cashFlows: number[]): number;
     ruleOf72(rate: number): number;
     yearOverYear(currentYear: number, pastYear: number): Percent;
+    percentOf(percent: number, value: number): Currency;
 }
 export interface IFormatOptions {
     currencyCode: string;
@@ -56,5 +57,6 @@ export default class Fiscal implements IFiscal {
     profitabilityIndex(principal: number, rate: number, cashFlows: number[]): number;
     ruleOf72(rate: number): number;
     yearOverYear(currentYear: number, pastYear: number): Percent;
+    percentOf(percent: number, value: number): Currency;
 }
 export {};
