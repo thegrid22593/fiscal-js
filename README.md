@@ -195,3 +195,9 @@ Year over year (YOY) is a financial formula that represents the annual increase 
 ```ts
 fiscal.yearOverYear(currentYear: number, pastYear: number): Percent;
 ```
+
+### Percent Of
+Find the percent of a certain value
+```ts
+fiscal.percentOf(percent: number, value: number): Currency;
+```
