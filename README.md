@@ -166,6 +166,12 @@ The profitability index (PI) is a measure of a project's or investment's attract
 fiscal.profitabilityIndex(principal: number, rate: number, cashFlows: number[]): number
 ```
 
+### Return on Equity (ROE)
+Return on equity (ROE) is a measure of financial performance calculated by dividing net income by shareholders' equity
+```ts
+fiscal.percentOf(percent: number, value: number): Currency;
+```
+
 ### Rule of 72
 The Rule of 72 is a simple formula used to estimate the length of time required to double an investment. The rule of 72 is primarily used in off the cuff situations where an individual needs to make a quick calculation instead of working out the exact time it takes to double an investment.
 ```ts

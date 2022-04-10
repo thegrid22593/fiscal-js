@@ -23,6 +23,7 @@ interface IFiscal {
     ruleOf72(rate: number): number;
     yearOverYear(currentYear: number, pastYear: number): Percent;
     percentOf(percent: number, value: number): Currency;
+    returnOnEquity(netIncome: number, shareHoldersEquity: number): Percent;
 }
 export interface IFormatOptions {
     currencyCode: string;
@@ -58,5 +59,6 @@ export default class Fiscal implements IFiscal {
     ruleOf72(rate: number): number;
     yearOverYear(currentYear: number, pastYear: number): Percent;
     percentOf(percent: number, value: number): Currency;
+    returnOnEquity(netIncome: number, shareHoldersEquity: number): Percent;
 }
 export {};
