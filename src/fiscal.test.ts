@@ -251,3 +251,12 @@ describe('YoY: Year over Year', () => {
     });
 
 });
+
+describe('ROE: Return on Equity', () => {
+
+    test('With a net income of $2,000,000 and a shareholders equity of $500,000', () => {
+       let ROE = fiscal.returnOnEquity(50000, 225000);
+       expect(ROE.asString()).toBe("22%");
+    })
+
+});

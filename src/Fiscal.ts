@@ -24,6 +24,7 @@ interface IFiscal {
     ruleOf72(rate: number): number;
     yearOverYear(currentYear: number, pastYear: number): Percent;
     percentOf(percent: number, value: number): Currency;
+    returnOnEquity(netIncome: number, shareHoldersEquity: number): Percent
 }
 
 export interface IFormatOptions {
@@ -463,6 +464,19 @@ export default class Fiscal implements IFiscal {
 
     public percentOf(percent: number, value: number): Currency {
         return new Currency(value * new Percent(percent).asDecimal());
+    }
+
+    /**
+     * 
+     * @param netIncome 
+     * @param shareHoldersEquity 
+     * @returns Percent
+     * 
+     * Return on equity (ROE) is a measure of financial performance calculated 
+     * by dividing net income by shareholders' equity 
+     */
+    public returnOnEquity(netIncome: number, shareHoldersEquity: number): Percent {
+        return new Percent(Math.round(100 * (netIncome / shareHoldersEquity)));
     }
 
     //TODO: 
