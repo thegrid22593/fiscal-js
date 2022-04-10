@@ -169,7 +169,7 @@ fiscal.profitabilityIndex(principal: number, rate: number, cashFlows: number[]):
 ### Return on Equity (ROE)
 Return on equity (ROE) is a measure of financial performance calculated by dividing net income by shareholders' equity
 ```ts
-fiscal.percentOf(percent: number, value: number): Currency;
+fiscal.returnOnEquity(netIncome: number, shareHoldersEquity: number): Percent
 ```
 
 ### Rule of 72
